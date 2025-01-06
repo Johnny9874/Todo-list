@@ -1,26 +1,32 @@
 <?php
-
 class Database {
-    private static $instance = null;
-    private $pdo;
+    private $host = 'localhost';
+    private $dbname = 'todo-list';
+    private $username = 'root';
+    private $password = '';
+    private $conn;
 
     private function __construct() {
-        $dsn = 'mysql:host=localhost;dbname=todolist;charset=utf8mb4';
-        $username = 'root';
-        $password = '';
-
         try {
-            $this->pdo = new PDO($dsn, $username, $password);
-            $this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $this->conn = new PDO("mysql:host={$this->host};dbname={$this->dbname}", $this->username, $this->password);
+            $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         } catch (PDOException $e) {
-            die('Erreur de connexion : ' . $e->getMessage());
+            echo "Connection failed: " . $e->getMessage();
         }
     }
 
+    // Méthode pour obtenir l'instance de la connexion PDO
     public static function getInstance() {
-        if (self::$instance === null) {
-            self::$instance = new self();
+        static $instance;
+        if (!$instance) {
+            $instance = new Database();
         }
-        return self::$instance->pdo;
+        return $instance;
+    }
+
+    // Retourner la connexion PDO
+    public function getConnection() {
+        return $this->conn;
     }
 }
+?>
