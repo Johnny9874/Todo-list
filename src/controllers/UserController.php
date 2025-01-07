@@ -44,12 +44,52 @@ class UserController {
             }
         }
     }
-}    
 
-// Vérifier l'action et appeler la méthode appropriée
-$controller = new UserController();
+    // Méthode pour la connexion d'un utilisateur
+    public function login() {
+        // Vérifiez si la méthode de la requête est POST
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Récupérer les données du formulaire
+            $usernameOrEmail = $_POST['username'];
+            $password = $_POST['password'];
 
-if (isset($_GET['action']) && $_GET['action'] === 'register') {
-    $controller->register();  // Appeler la méthode d'inscription
+            // Connexion à la base de données
+            $conn = new mysqli('localhost', 'root', '', 'todo-list');
+            if ($conn->connect_error) {
+                die("Erreur de connexion : " . $conn->connect_error);
+            }
+
+            // Requête pour vérifier l'existence de l'utilisateur par username ou email
+            $sql = "SELECT * FROM users WHERE username = ? OR email = ?";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("ss", $usernameOrEmail, $usernameOrEmail);
+            $stmt->execute();
+            $result = $stmt->get_result();
+
+            // Si l'utilisateur existe
+            if ($result->num_rows > 0) {
+                $user = $result->fetch_assoc();
+
+                // Vérifier le mot de passe
+                if (password_verify($password, $user['password'])) {
+                    // Connexion réussie, démarrer la session
+                    session_start();
+                    $_SESSION['user_id'] = $user['id']; // Stocker l'ID de l'utilisateur
+                    $_SESSION['username'] = $user['username']; // Stocker le nom d'utilisateur
+                    
+                    // Rediriger vers la page d'accueil ou tableau de bord
+                    header('Location: ../public/html/main.html');
+                    exit();
+                } else {
+                    echo "Mot de passe incorrect.";
+                }
+            } else {
+                echo "Aucun utilisateur trouvé avec ces informations.";
+            }
+
+            $stmt->close();
+            $conn->close();
+        }
+    }
 }
 ?>

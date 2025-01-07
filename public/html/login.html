@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connection</title>
+    <link rel="stylesheet" href="..\css\login.css">
+</head>
+<body>
+    <div class="container">
+        <div class="connection">
+            <h2>Bienvenue sur notre To-do list !</h2>
+            <p>Connectez-vous pour accéder à votre liste de tâches : </p>
+            <form method="POST" action="../index.php?action=login">
+                <input type="text" name="username" placeholder="Nom d'utilisateur" required>
+                <input type="email" name="email" placeholder="email" required>
+                <input type="password" name="password" placeholder="Mot de passe" required>
+                <button type="submit">Se connecter</button>
+            </form>
+            <p class="inscription">Vous n'avez pas de compte ? <a href="register.html">Inscrivez-vous</a></p>
+        </div>
+    </div>
+    <script src="..\js\login.js"></script>
+</body>
+</html>
