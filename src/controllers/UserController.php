@@ -76,7 +76,7 @@ class UserController {
                     $_SESSION['username'] = $user['username']; // Stocker le nom d'utilisateur
                     
                     // Rediriger vers la page d'accueil ou tableau de bord
-                    header('Location: ../public/html/main.html');
+                    header('Location: html/main.html');
                     exit();
                 } else {
                     echo "Mot de passe incorrect.";
@@ -121,10 +121,17 @@ class UserController {
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("ssi", $username, $email, $userId);
             }
+
+            
+
     
             // Exécuter la requête et vérifier si elle réussit
             if ($stmt->execute()) {
-                echo "Profil mis à jour avec succès.";
+
+                // Rediriger vers main.html après la mise à jour du profil
+                error_log("Redirection vers : /todo-list/html/main.html");
+                header('Location: /todo-list/public/html/main.html');
+                exit();  // Assurez-vous d'ajouter exit pour stopper l'exécution du script
             } else {
                 echo "Erreur lors de la mise à jour du profil : " . $conn->error;
             }
@@ -133,6 +140,8 @@ class UserController {
             $conn->close();
         }
     }
+    
+    
     public function getProfile() {
         session_start();
     

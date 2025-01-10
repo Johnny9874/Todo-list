@@ -26,12 +26,16 @@ if ($_GET['action'] === 'profile') {
 
     if ($user) {
         include __DIR__ . '/html/profile.html';
-    }else {
+    } else {
         echo "Utilisateur non trouvé";
     }
 }
 
-if ($_GET['action'] === 'updateProfile') {
-    $controller->updateProfile(); // Appelle la méthode pour mettre à jour le profil
+if (isset($_GET['action'])) {
+    $action = $_GET['action'];
+    
+    if ($action === 'updateProfile') {
+        $controller = new UserController();
+        $controller->updateProfile();
+    }
 }
-?>
