@@ -5,8 +5,6 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-echo "UserController.php chargé"; // Débogage
-
 require_once __DIR__ . '/../services/UserService.php'; // Utiliser le chemin absolu relatif au fichier
 
 class UserController {
@@ -91,5 +89,84 @@ class UserController {
             $conn->close();
         }
     }
+    public function updateProfile() {
+        session_start();
+    
+        // Vérifiez si l'utilisateur est connecté
+        if (!isset($_SESSION['user_id'])) {
+            echo "Vous devez être connecté pour modifier votre profil.";
+            return;
+        }
+    
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $userId = $_SESSION['user_id'];
+            $username = $_POST['username'];
+            $email = $_POST['email'];
+            $password = $_POST['password'];
+    
+            // Connexion à la base de données
+            $conn = new mysqli('localhost', 'root', '', 'todo-list');
+            if ($conn->connect_error) {
+                die("Erreur de connexion : " . $conn->connect_error);
+            }
+    
+            // Préparer la requête SQL pour mettre à jour le profil
+            if (!empty($password)) {
+                $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+                $sql = "UPDATE users SET username = ?, email = ?, password = ? WHERE id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("sssi", $username, $email, $hashedPassword, $userId);
+            } else {
+                $sql = "UPDATE users SET username = ?, email = ? WHERE id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("ssi", $username, $email, $userId);
+            }
+    
+            // Exécuter la requête et vérifier si elle réussit
+            if ($stmt->execute()) {
+                echo "Profil mis à jour avec succès.";
+            } else {
+                echo "Erreur lors de la mise à jour du profil : " . $conn->error;
+            }
+    
+            $stmt->close();
+            $conn->close();
+        }
+    }
+    public function getProfile() {
+        session_start();
+    
+        // Vérifiez si l'utilisateur est connecté
+        if (!isset($_SESSION['user_id'])) {
+            echo "Vous devez être connecté pour voir votre profil.";
+            return;
+        }
+    
+        $userId = $_SESSION['user_id'];
+    
+        // Connexion à la base de données
+        $conn = new mysqli('localhost', 'root', '', 'todo-list');
+        if ($conn->connect_error) {
+            die("Erreur de connexion : " . $conn->connect_error);
+        }
+    
+        // Requête SQL pour récupérer le profil de l'utilisateur
+        $sql = "SELECT username, email FROM users WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+    
+        if ($result->num_rows > 0) {
+            $user = $result->fetch_assoc();
+            return $user;
+        } else {
+            echo "Utilisateur introuvable.";
+            return null;
+        }
+    
+        $stmt->close();
+        $conn->close();
+    }    
 }
 ?>

@@ -19,4 +19,19 @@ if (isset($_GET['action'])) {
         $controller->login();
     }
 }
+
+if ($_GET['action'] === 'profile') {
+    $controller = new UserController();
+    $user = $controller->getProfile();
+
+    if ($user) {
+        include __DIR__ . '/html/profile.html';
+    }else {
+        echo "Utilisateur non trouvé";
+    }
+}
+
+if ($_GET['action'] === 'updateProfile') {
+    $controller->updateProfile(); // Appelle la méthode pour mettre à jour le profil
+}
 ?>

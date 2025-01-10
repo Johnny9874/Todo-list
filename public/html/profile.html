@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="stylesheet" href="../public/css/profile.css">
+</head>
+<body>
+    <div class="container">
+        <div class="profile">
+            <h2>Vous souhaitez modifier vos identifiant ?</h2>
+            <p>C'est juste en dessous :</p>
+            <form method="POST" action="../index.php?action=updateProfile">
+                <label for="username">Nom d'utilisateur :</label>
+                <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($user['username']); ?>" required><br>
+
+                <label for="email">Email :</label>
+                <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required><br>
+
+                <label for="password">Mot de passe :</label>
+                <input type="password" id="password" name="password"><br>
+
+                <button type="submit">Mettre à jour</button>
+            </form>
+        </div>
+    </div>
+    <script src="../public/js/profile.js"></script>
+</body>
+</html>
+
+
