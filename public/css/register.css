@@ -60,3 +60,22 @@ form button{
     border-radius: 5px;
     cursor: pointer;
 }
+
+/* Style pour les messages d'erreur */
+.error-message {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 5px;
+}
+
+/* Style pour les champs avec une erreur */
+input.error {
+    border: 1px solid red;
+}
+
+/* Effet de focus sur les champs */
+input.focused {
+    border: 2px solid #4CAF50;
+    outline: none;
+    transition: border 0.3s ease-in-out;
+}
