@@ -1,5 +1,7 @@
 {
-    "name": "Todo-list",
+    "name": "monorganisation/todo-list",
     "description": "Ma todo-list",
-    "require": {}
+    "require": {
+        "php": "^8.0"
+    }
 }
