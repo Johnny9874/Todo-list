@@ -1,29 +1,41 @@
 <?php
-
 namespace Controllers;
 
-// Vérifier si la variable d'environnement JAWSDB existe
-if (getenv('JAWSDB_URL')) {
-    $url = parse_url(getenv('JAWSDB_URL'));
+class UserController {
+    
+    // Autres méthodes ici...
 
-    $servername = $url["host"];
-    $username = $url["user"];
-    $password = $url["pass"];
-    $dbname = substr($url["path"], 1); // Enlever le "/" avant le nom de la base de données
+    // Méthode pour mettre à jour le profil d'un utilisateur
+    public function updateProfile() {
+        session_start();
 
-    // Afficher pour débogage
-    error_log("Connexion à la base de données JAWSDB: hôte=$servername, utilisateur=$username, base=$dbname");
+        if (isset($_SESSION['user_id'], $_POST['username'], $_POST['email'])) {
+            $userId = $_SESSION['user_id'];
+            $username = $_POST['username'];
+            $email = $_POST['email'];
+            $password = isset($_POST['password']) ? password_hash($_POST['password'], PASSWORD_BCRYPT) : null;
 
-    // Connexion à la base de données MySQL sur Heroku (JAWSDB)
-    $conn = new mysqli($servername, $username, $password, $dbname);
-} else {
-    // Si la variable d'environnement n'est pas présente, tenter une connexion locale (si applicable)
-    $conn = new mysqli('localhost', 'root', '', 'todo-list');
+            global $conn;
+
+            // Mettre à jour le profil de l'utilisateur
+            if ($password) {
+                // Si le mot de passe est fourni, on le met à jour aussi
+                $sql = "UPDATE users SET username = ?, email = ?, password = ? WHERE id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("sssi", $username, $email, $password, $userId);
+            } else {
+                // Si le mot de passe n'est pas fourni, on ne le met pas à jour
+                $sql = "UPDATE users SET username = ?, email = ? WHERE id = ?";
+                $stmt = $conn->prepare($sql);
+                $stmt->bind_param("ssi", $username, $email, $userId);
+            }
+
+            $stmt->execute();
+            header("Location: index.php?action=profile");  // Rediriger vers la page de profil après la mise à jour
+            exit();
+        } else {
+            echo "Erreur dans la mise à jour du profil.";
+        }
+    }
 }
-
-// Vérification de la connexion
-if ($conn->connect_error) {
-    die("Erreur de connexion : " . $conn->connect_error);
-}
-error_log("Connexion réussie à la base de données.");
 ?>

@@ -6,35 +6,67 @@ error_reporting(E_ALL);
 require_once __DIR__ . '/autoload.php';
 
 // Utiliser le namespace approprié pour UserController
-use Controllers\UserController;  // Importation du namespace
+use Controllers\UserController;
+
+// Créer une instance de UserController
+$controller = new UserController();
 
 // Vérifier l'action de la requête
 if (isset($_GET['action'])) {
-    // Créer une instance du contrôleur
-    $controller = new UserController();
-
-    // Gérer les différentes actions
     switch ($_GET['action']) {
         case 'register':
-            $controller->register();
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                // Inscription
+                $controller->register();
+            } else {
+                // Afficher le formulaire d'inscription
+                include __DIR__ . '/html/register.html';
+            }
             break;
+
         case 'login':
-            $controller->login();
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                // Connexion
+                $controller->login();
+            } else {
+                // Afficher le formulaire de connexion
+                include __DIR__ . '/html/login.html';
+            }
             break;
+
         case 'profile':
+            // Afficher le profil de l'utilisateur
             $user = $controller->getProfile();
             if ($user) {
                 include __DIR__ . '/html/profile.html';
             } else {
-                echo "Utilisateur non trouvé";
+                echo "Utilisateur non trouvé ou non connecté.";
             }
             break;
+
         case 'updateProfile':
-            $controller->updateProfile();
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+                // Mise à jour du profil
+                $controller->updateProfile();
+            }
             break;
+
+        case 'logout':
+            // Déconnexion
+            session_start();
+            session_destroy();
+            header("Location: login.html");
+            exit();
+            break;
+
         default:
-            echo "Action non reconnue";
+            // Afficher la page principale (to-do list)
+            $user = $controller->getProfile();
+            if ($user) {
+                include __DIR__ . '/html/main.html';
+            } else {
+                echo "Utilisateur non connecté.";
+            }
             break;
     }
 }
-?>
