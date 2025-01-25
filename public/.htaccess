@@ -1,0 +1,3 @@
+# Redirige l'URL racine vers login.html
+RewriteEngine On
+RewriteRule ^$ /html/login.html [L]
