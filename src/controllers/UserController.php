@@ -1,24 +1,27 @@
 <?php
-// Vérifier si l'on est sur Heroku, sinon utiliser la base de données locale
-$servername = "localhost"; // Valeur par défaut pour la connexion locale
-$username = "root";        // Nom d'utilisateur par défaut pour local
-$password = "";            // Mot de passe par défaut pour local
-$dbname = "todo-list";     // Nom de la base de données locale
 
-// Si on est sur Heroku, on utilise les variables d'environnement
-if (getenv('CLEARDB_DATABASE_URL')) {
-    $url = parse_url(getenv('CLEARDB_DATABASE_URL'));
+// Vérifier si la variable d'environnement JAWSDB existe
+if (getenv('JAWSDB_URL')) {
+    $url = parse_url(getenv('JAWSDB_URL'));
+
     $servername = $url["host"];
     $username = $url["user"];
     $password = $url["pass"];
-    $dbname = substr($url["path"], 1); // On retire le slash devant le nom de la DB
+    $dbname = substr($url["path"], 1); // Enlever le "/" avant le nom de la base de données
+
+    // Afficher pour débogage
+    error_log("Connexion à la base de données JAWSDB: hôte=$servername, utilisateur=$username, base=$dbname");
+
+    // Connexion à la base de données MySQL sur Heroku (JAWSDB)
+    $conn = new mysqli($servername, $username, $password, $dbname);
+} else {
+    // Si la variable d'environnement n'est pas présente, tenter une connexion locale (si applicable)
+    $conn = new mysqli('localhost', 'root', '', 'todo-list');
 }
 
-// Connexion à la base de données
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Vérifier la connexion
+// Vérification de la connexion
 if ($conn->connect_error) {
     die("Erreur de connexion : " . $conn->connect_error);
 }
+error_log("Connexion réussie à la base de données.");
 ?>
