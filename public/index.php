@@ -1,19 +1,18 @@
 <?php
-
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-// Inclure les contrôleurs nécessaires
+// Inclure le fichier d'autoload
 require_once __DIR__ . '/autoload.php';
 
-use Controllers\UserController;
+// Utiliser le namespace approprié pour UserController
+use Controllers\UserController;  // Importation du namespace
 
-
-// Vérifiez l'action de la requête
+// Vérifier l'action de la requête
 if (isset($_GET['action'])) {
-    // Créer une instance du contrôleur une seule fois
+    // Créer une instance du contrôleur
     $controller = new UserController();
-    
+
     // Gérer les différentes actions
     switch ($_GET['action']) {
         case 'register':
@@ -38,3 +37,4 @@ if (isset($_GET['action'])) {
             break;
     }
 }
+?>
