@@ -1,5 +1,7 @@
 <?php
 
+namespace Controllers;
+
 // Vérifier si la variable d'environnement JAWSDB existe
 if (getenv('JAWSDB_URL')) {
     $url = parse_url(getenv('JAWSDB_URL'));

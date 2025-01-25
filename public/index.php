@@ -6,6 +6,8 @@ error_reporting(E_ALL);
 // Inclure les contrôleurs nécessaires
 require_once __DIR__ . '/autoload.php';
 
+use Controllers\UserController;
+
 
 // Vérifiez l'action de la requête
 if (isset($_GET['action'])) {
