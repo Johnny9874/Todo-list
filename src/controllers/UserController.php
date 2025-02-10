@@ -89,6 +89,19 @@ class UserController {
         }
     }
 
+    public function getProfile() {
+        session_start();
+    
+        if (!isset($_SESSION['user_id'])) {
+            // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+            header("Location: /html/login.html");
+            exit();
+        }
+    
+        // L'utilisateur est connecté, on peut afficher la page de profil
+        include __DIR__ . '/../public/html/profile.html';
+    }
+
     // Méthode pour mettre à jour le profil d'un utilisateur
     public function updateProfile() {
         session_start();
