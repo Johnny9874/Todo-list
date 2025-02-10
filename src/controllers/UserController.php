@@ -2,7 +2,31 @@
 namespace Controllers;
 class UserController {
     
-    // Autres méthodes ici...
+    public function register() {
+        // Code pour l'inscription de l'utilisateur
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            // Traitement du formulaire d'inscription
+            $username = $_POST['username'];
+            $email = $_POST['email'];
+            $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+
+            global $conn;
+
+            // Insertion des données dans la base
+            $sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("sss", $username, $email, $password);
+
+            if ($stmt->execute()) {
+                echo "Utilisateur inscrit avec succès!";
+            } else {
+                echo "Erreur lors de l'inscription.";
+            }
+        } else {
+            // Afficher le formulaire d'inscription
+            include __DIR__ . '/../public/html/register.html';
+        }
+    }
 
     // Méthode pour mettre à jour le profil d'un utilisateur
     public function updateProfile() {
