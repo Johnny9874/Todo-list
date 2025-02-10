@@ -2,7 +2,7 @@
 namespace Controllers;
 
 // Inclure le fichier de connexion à la base de données
-require_once __DIR__ . '/../db.php';  // Assurez-vous que ce chemin est correct
+require_once __DIR__ . '/../path/to/db.php';  // Assurez-vous que le chemin vers db.php est correct
 
 class UserController {
 
@@ -16,9 +16,19 @@ class UserController {
 
             global $conn;  // Utiliser la connexion définie dans db.php
 
+            // Vérification de la connexion
+            if (!$conn) {
+                die("La connexion à la base de données a échoué.");
+            }
+
             // Insertion des données dans la base de données
             $sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
             $stmt = $conn->prepare($sql);
+
+            if ($stmt === false) {
+                die("Erreur lors de la préparation de la requête : " . $conn->error);
+            }
+
             $stmt->bind_param("sss", $username, $email, $password);
 
             if ($stmt->execute()) {
@@ -43,6 +53,11 @@ class UserController {
             $password = isset($_POST['password']) ? password_hash($_POST['password'], PASSWORD_BCRYPT) : null;
 
             global $conn;  // Utiliser la connexion définie dans db.php
+
+            // Vérification de la connexion
+            if (!$conn) {
+                die("La connexion à la base de données a échoué.");
+            }
 
             // Mettre à jour le profil de l'utilisateur
             if ($password) {
