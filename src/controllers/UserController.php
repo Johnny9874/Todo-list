@@ -99,7 +99,7 @@ class UserController {
         }
     
         // L'utilisateur est connecté, on peut afficher la page de profil
-        include __DIR__ . '/../public/html/profile.html';
+        include __DIR__ . '/html/profile.html';
     }
 
     // Méthode pour mettre à jour le profil d'un utilisateur
