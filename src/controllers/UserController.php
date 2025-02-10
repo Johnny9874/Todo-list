@@ -78,7 +78,7 @@ class UserController {
                     $_SESSION['username'] = $user['username'];
                     echo "Connexion réussie !";
                     // Redirection vers le tableau de bord ou une autre page après connexion
-                    header("Location: /public/html/main.html");
+                    header("Location: /html/main.html");
                     exit();
                 } else {
                     echo "Mot de passe incorrect.";
