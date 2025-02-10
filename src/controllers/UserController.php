@@ -1,18 +1,22 @@
 <?php
 namespace Controllers;
+
+// Inclure le fichier de connexion à la base de données
+require_once __DIR__ . '/../db.php';  // Assurez-vous que ce chemin est correct
+
 class UserController {
-    
+
+    // Méthode pour inscrire un utilisateur
     public function register() {
-        // Code pour l'inscription de l'utilisateur
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             // Traitement du formulaire d'inscription
             $username = $_POST['username'];
             $email = $_POST['email'];
             $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
 
-            global $conn;
+            global $conn;  // Utiliser la connexion définie dans db.php
 
-            // Insertion des données dans la base
+            // Insertion des données dans la base de données
             $sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
             $stmt = $conn->prepare($sql);
             $stmt->bind_param("sss", $username, $email, $password);
@@ -38,7 +42,7 @@ class UserController {
             $email = $_POST['email'];
             $password = isset($_POST['password']) ? password_hash($_POST['password'], PASSWORD_BCRYPT) : null;
 
-            global $conn;
+            global $conn;  // Utiliser la connexion définie dans db.php
 
             // Mettre à jour le profil de l'utilisateur
             if ($password) {
