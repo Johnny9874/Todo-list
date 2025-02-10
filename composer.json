@@ -3,5 +3,10 @@
     "description": "Ma todo-list",
     "require": {
         "php": "^8.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Controllers\\": "src/Controllers/"
+        }
     }
 }
