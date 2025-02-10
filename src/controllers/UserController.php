@@ -2,30 +2,34 @@
 namespace Controllers;
 
 // Inclure le fichier de connexion à la base de données
-require_once __DIR__ . '/../db.php';  // Assurez-vous que le chemin vers db.php est correct
+require_once __DIR__ . '/../db.php';  
 
 class UserController {
 
     // Méthode pour inscrire un utilisateur
     public function register() {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Traitement du formulaire d'inscription
-            $username = $_POST['username'];
-            $email = $_POST['email'];
-            $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-
-            global $conn;  // Utiliser la connexion définie dans db.php
-
-            // Vérification de la connexion
-            if (!$conn) {
-                die("La connexion à la base de données a échoué.");
+            // Vérifier que les champs sont remplis
+            if (!isset($_POST['username'], $_POST['email'], $_POST['password'])) {
+                die("Erreur : Tous les champs doivent être remplis.");
             }
 
-            // Insertion des données dans la base de données
+            $username = trim($_POST['username']);
+            $email = trim($_POST['email']);
+            $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
+
+            global $conn;
+
+            // Vérifier que la connexion est bien active
+            if (!$conn) {
+                die("Erreur : La connexion à la base de données est introuvable.");
+            }
+
+            // Préparer la requête SQL
             $sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
             $stmt = $conn->prepare($sql);
 
-            if ($stmt === false) {
+            if (!$stmt) {
                 die("Erreur lors de la préparation de la requête : " . $conn->error);
             }
 
@@ -34,10 +38,11 @@ class UserController {
             if ($stmt->execute()) {
                 echo "Utilisateur inscrit avec succès!";
             } else {
-                echo "Erreur lors de l'inscription.";
+                echo "Erreur lors de l'inscription : " . $stmt->error;
             }
+
+            $stmt->close();
         } else {
-            // Afficher le formulaire d'inscription
             include __DIR__ . '/../public/html/register.html';
         }
     }
@@ -48,35 +53,42 @@ class UserController {
 
         if (isset($_SESSION['user_id'], $_POST['username'], $_POST['email'])) {
             $userId = $_SESSION['user_id'];
-            $username = $_POST['username'];
-            $email = $_POST['email'];
+            $username = trim($_POST['username']);
+            $email = trim($_POST['email']);
             $password = isset($_POST['password']) ? password_hash($_POST['password'], PASSWORD_BCRYPT) : null;
 
-            global $conn;  // Utiliser la connexion définie dans db.php
+            global $conn;
 
-            // Vérification de la connexion
+            // Vérifier que la connexion est bien active
             if (!$conn) {
-                die("La connexion à la base de données a échoué.");
+                die("Erreur : La connexion à la base de données est introuvable.");
             }
 
-            // Mettre à jour le profil de l'utilisateur
+            // Construire la requête en fonction des valeurs fournies
             if ($password) {
-                // Si le mot de passe est fourni, on le met à jour aussi
                 $sql = "UPDATE users SET username = ?, email = ?, password = ? WHERE id = ?";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("sssi", $username, $email, $password, $userId);
             } else {
-                // Si le mot de passe n'est pas fourni, on ne le met pas à jour
                 $sql = "UPDATE users SET username = ?, email = ? WHERE id = ?";
                 $stmt = $conn->prepare($sql);
                 $stmt->bind_param("ssi", $username, $email, $userId);
             }
 
-            $stmt->execute();
-            header("Location: index.php?action=profile");  // Rediriger vers la page de profil après la mise à jour
-            exit();
+            if (!$stmt) {
+                die("Erreur lors de la préparation de la requête : " . $conn->error);
+            }
+
+            if ($stmt->execute()) {
+                header("Location: index.php?action=profile");  
+                exit();
+            } else {
+                die("Erreur lors de la mise à jour du profil : " . $stmt->error);
+            }
+
+            $stmt->close();
         } else {
-            echo "Erreur dans la mise à jour du profil.";
+            echo "Erreur : Informations utilisateur incomplètes.";
         }
     }
 }

@@ -15,19 +15,11 @@ $dbname = ltrim($url['path'], '/');  // Supprimer le premier '/' du nom de la ba
 $username = $url['user'];
 $password = $url['pass'];
 
-// Afficher les informations de connexion (pour vérifier)
-echo "Hôte : $host<br>";
-echo "Port : $port<br>";
-echo "Nom de la base : $dbname<br>";
-echo "Utilisateur : $username<br>";
-
 // Connexion à MySQL via mysqli
 $conn = new mysqli($host, $username, $password, $dbname, $port);
 
 // Vérification de la connexion
 if ($conn->connect_error) {
     die("La connexion à la base de données a échoué : " . $conn->connect_error);
-} else {
-    echo "Connexion réussie !";
 }
 ?>
