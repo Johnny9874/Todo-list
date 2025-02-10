@@ -1,26 +1,33 @@
 <?php
 // Récupérer les informations de connexion depuis l'environnement Heroku (JawsDB)
-$url = parse_url(getenv('JAWSDB_URL'));
+$url = getenv('JAWSDB_URL');
+
+if (!$url) {
+    die("Erreur : La variable d'environnement JAWSDB_URL n'est pas définie.");
+}
+
+// Analyser l'URL de connexion
+$url = parse_url($url);
 
 $host = $url['host'];
-$port = $url['port'];
-$dbname = ltrim($url['path'], '/');  // Le nom de la base de données se trouve après le '/'
+$port = isset($url['port']) ? $url['port'] : 3306; // Port par défaut de MySQL
+$dbname = ltrim($url['path'], '/');  // Supprimer le premier '/' du nom de la base de données
 $username = $url['user'];
 $password = $url['pass'];
 
-try {
-    // Connexion à la base de données MySQL via mysqli
-    $conn = new mysqli($host, $username, $password, $dbname, $port);
+// Afficher les informations de connexion (pour vérifier)
+echo "Hôte : $host<br>";
+echo "Port : $port<br>";
+echo "Nom de la base : $dbname<br>";
+echo "Utilisateur : $username<br>";
 
-    // Vérification de la connexion
-    if ($conn->connect_error) {
-        throw new Exception("Connexion échouée : " . $conn->connect_error);
-    } else {
-        // Connexion réussie (optionnel, pour débogage)
-        // echo "Connexion réussie à la base de données.";
-    }
-} catch (Exception $e) {
-    // Gérer l'erreur et afficher un message
-    die("Erreur : " . $e->getMessage());
+// Connexion à MySQL via mysqli
+$conn = new mysqli($host, $username, $password, $dbname, $port);
+
+// Vérification de la connexion
+if ($conn->connect_error) {
+    die("La connexion à la base de données a échoué : " . $conn->connect_error);
+} else {
+    echo "Connexion réussie !";
 }
 ?>
