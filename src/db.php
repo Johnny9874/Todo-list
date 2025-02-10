@@ -1,4 +1,6 @@
 <?php
+global $conn;
+
 // Récupérer les informations de connexion depuis l'environnement Heroku (JawsDB)
 $url = getenv('JAWSDB_URL');
 
