@@ -13,10 +13,10 @@
             <p>C'est juste en dessous :</p>
             <form method="POST" action="/todo-list/public/index.php?action=updateProfile">
                 <label for="username">Nom d'utilisateur :</label>
-                <input type="text" id="username" name="username" value="<?php echo htmlspecialchars($user['username']); ?>" required><br>
+                <input type="text" id="username" name="username" required><br>
 
                 <label for="email">Email :</label>
-                <input type="email" id="email" name="email" value="<?php echo htmlspecialchars($user['email']); ?>" required><br>
+                <input type="email" id="email" name="email" required><br>
 
                 <label for="password">Mot de passe :</label>
                 <input type="password" id="password" name="password"><br>
