@@ -107,6 +107,9 @@ class UserController {
     public function updateProfile() {
         session_start();
 
+        var_dump($_SESSION);
+        var_dump($_POST);
+
         if (isset($_SESSION['user_id'], $_POST['username'], $_POST['email'])) {
             $userId = $_SESSION['user_id'];
             $username = trim($_POST['username']);
