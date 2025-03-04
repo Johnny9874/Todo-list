@@ -3,23 +3,17 @@
         'name' => 'monorganisation/todo-list',
         'pretty_version' => 'dev-main',
         'version' => 'dev-main',
-        'reference' => '16214c07cf66aa326d07946e8d8ebce4841750e1',
+        'reference' => '0bdd340acd652d056be335457cadec64361f34db',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
         'dev' => true,
     ),
     'versions' => array(
-        'mongodb/builder' => array(
-            'dev_requirement' => false,
-            'replaced' => array(
-                0 => '*',
-            ),
-        ),
         'mongodb/mongodb' => array(
-            'pretty_version' => '1.21.0',
-            'version' => '1.21.0.0',
-            'reference' => 'd216a5bfc62c9b63ba3523565a35856ab91f78d9',
+            'pretty_version' => '1.19.0',
+            'version' => '1.19.0.0',
+            'reference' => 'cbc8104c0b2c32b7cf572ff759324c872e8dc63a',
             'type' => 'library',
             'install_path' => __DIR__ . '/../mongodb/mongodb',
             'aliases' => array(),
@@ -28,7 +22,7 @@
         'monorganisation/todo-list' => array(
             'pretty_version' => 'dev-main',
             'version' => 'dev-main',
-            'reference' => '16214c07cf66aa326d07946e8d8ebce4841750e1',
+            'reference' => '0bdd340acd652d056be335457cadec64361f34db',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
