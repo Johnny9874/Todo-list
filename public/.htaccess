@@ -1,10 +1,9 @@
-DirectoryIndex index.php
+DirectoryIndex index.php index.html
 RewriteEngine On
 
-# Servir directement les fichiers PHP s'ils existent
+# Si le fichier PHP existe, l'exécuter directement
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^(.*)$ $1 [QSA,L]
 
-# Rediriger l'URL racine vers login.html
+# Redirection vers login.html si aucune route ne correspond
 RewriteRule ^$ /html/login.html [L]
-
