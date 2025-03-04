@@ -1,9 +1,13 @@
 {
     "name": "monorganisation/todo-list",
     "description": "Ma todo-list",
+    
     "require": {
-        "php": "^8.0"
+        "php": "^8.0",
+        "ext-mongodb": "*",
+        "mongodb/mongodb": "^1.10"
     },
+
     "autoload": {
         "psr-4": {
             "Controllers\\": "src/controllers/"
