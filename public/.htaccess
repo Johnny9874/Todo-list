@@ -1,8 +1,8 @@
 RewriteEngine On
 
-# Permet d'exécuter les fichiers PHP directement
+# Permet d'exécuter directement les fichiers PHP s'ils existent
 RewriteCond %{REQUEST_FILENAME} -f
-RewriteRule ^(.+\.php)$ $1 [L]
+RewriteRule ^(.*)$ $1 [QSA,L]
 
-# Redirection par défaut
+# Redirection par défaut vers login.html
 RewriteRule ^$ /html/login.html [L]
