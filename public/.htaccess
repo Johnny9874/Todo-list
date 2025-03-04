@@ -1,8 +1,8 @@
 RewriteEngine On
 
-# Si c'est un fichier PHP existant, autorise l'accès
+# Permet d'exécuter les fichiers PHP directement
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^(.+\.php)$ $1 [L]
 
-# Redirige l'URL racine vers login.html
+# Redirection par défaut
 RewriteRule ^$ /html/login.html [L]
