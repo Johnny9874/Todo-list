@@ -1,50 +1,49 @@
 <?php
-
-//On va gérer l'ajout, la suppression, et l'affichage des tâches via le service TaskService.
 require_once '../services/TaskService.php';
 
 class TaskController {
     private $taskService;
 
-    // Le constructeur initialise une instance du service TaskService
     public function __construct() {
         $this->taskService = new TaskService();
     }
 
-    // Méthode pour ajouter une tâche
+    // Ajouter une tâche
     public function addTask($title, $description, $userId) {
         try {
-            // Appeler la méthode addTask du service TaskService
             $this->taskService->addTask($title, $description, $userId);
-            echo "Tâche ajoutée avec succès.";  // Afficher un message de succès
+            echo "✅ Tâche ajoutée avec succès.";
         } catch (Exception $e) {
-            // En cas d'erreur, afficher le message d'exception
-            echo "Erreur : " . $e->getMessage();
+            echo "❌ Erreur : " . $e->getMessage();
         }
     }
 
-    // Méthode pour récupérer toutes les tâches d'un utilisateur
-    public function getTasks($userId) {
+    // Récupérer les tâches depuis MySQL ou MongoDB
+    public function getTasks($userId, $source = "mysql") {
         try {
-            // Appeler la méthode getTasksByUser du service TaskService pour récupérer les tâches de l'utilisateur
-            $tasks = $this->taskService->getTasksByUser($userId);
-            // Afficher les tâches récupérées (ici, les afficher sous forme de tableau avec print_r)
-            print_r($tasks);
+            $tasks = $this->taskService->getTasksByUser($userId, $source);
+            
+            // Vérifie si des tâches existent
+            if (empty($tasks)) {
+                echo "📭 Aucune tâche trouvée.";
+                return;
+            }
+
+            // Affichage sous forme JSON
+            header('Content-Type: application/json');
+            echo json_encode($tasks);
         } catch (Exception $e) {
-            // En cas d'erreur, afficher le message d'exception
-            echo "Erreur : " . $e->getMessage();
+            echo "❌ Erreur : " . $e->getMessage();
         }
     }
 
-    // Méthode pour supprimer une tâche
+    // Supprimer une tâche
     public function deleteTask($taskId) {
         try {
-            // Appeler la méthode deleteTask du service TaskService pour supprimer la tâche
             $this->taskService->deleteTask($taskId);
-            echo "Tâche supprimée avec succès.";  // Afficher un message de succès
+            echo "🗑️ Tâche supprimée avec succès.";
         } catch (Exception $e) {
-            // En cas d'erreur, afficher le message d'exception
-            echo "Erreur : " . $e->getMessage();
+            echo "❌ Erreur : " . $e->getMessage();
         }
     }
 }
