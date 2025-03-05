@@ -1,1 +1,3 @@
-echo "<?php phpinfo();" > public/test.php
+<?php
+phpinfo();
+?>
