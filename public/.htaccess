@@ -1,9 +1,8 @@
 RewriteEngine On
 
-# Rediriger automatiquement vers index.php si ce n'est pas un fichier ou un dossier existant
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php?/$1 [L]
+# Permet d'exécuter les fichiers PHP normalement s'ils existent
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^(.*)$ $1 [QSA,L]
 
 # Activer la réécriture des URL
 Options +FollowSymLinks
