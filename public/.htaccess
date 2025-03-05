@@ -1,10 +1,13 @@
+echo "
 RewriteEngine On
 
-# Si un fichier ou un dossier existe, le servir directement
-RewriteCond %{REQUEST_FILENAME} -f [OR]
-RewriteCond %{REQUEST_FILENAME} -d
-RewriteRule ^ - [L]
+# Rediriger vers index.php si ce n'est pas un fichier ou dossier existant
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?/$1 [L]
 
-# Rediriger toutes les requêtes vers index.php
-RewriteRule ^ index.php [L]
-
+# Afficher les erreurs PHP
+php_flag display_errors on
+php_flag log_errors on
+php_value error_log /tmp/php_errors.log
+" > public/.htaccess
