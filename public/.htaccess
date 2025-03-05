@@ -1,8 +1,10 @@
 RewriteEngine On
 
-# Permet d'exécuter les fichiers PHP normalement s'ils existent
-RewriteCond %{REQUEST_FILENAME} -f
-RewriteRule ^(.*)$ $1 [QSA,L]
+# Si un fichier ou un dossier existe, le servir directement
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
 
-# Activer la réécriture des URL
-Options +FollowSymLinks
+# Rediriger toutes les requêtes vers index.php
+RewriteRule ^ index.php [L]
+
