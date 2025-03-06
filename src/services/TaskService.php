@@ -19,14 +19,11 @@ class TaskService {
     }
 
     // Récupérer les tâches de MySQL
-    public function getTasksByUser($userId, $source = "mysql") {
-        if ($source === "mysql") {
-            return $this->taskDAO->getTasksByUser($userId);
-        }
+    public function getTasksByUser($userId) {
+        return $this->taskDAO->getTasksByUser($userId);  // Appel uniquement MySQL
     }
-}
 
-    // Supprimer une tâche en MySQL et MongoDB
+    // Supprimer une tâche en MySQL
     public function deleteTask($taskId) {
         $task = $this->taskDAO->getTaskById($taskId);
         if (!$task) {
@@ -36,4 +33,5 @@ class TaskService {
         // Supprimer en MySQL
         $this->taskDAO->deleteTask($taskId);
     }
+}
 ?>

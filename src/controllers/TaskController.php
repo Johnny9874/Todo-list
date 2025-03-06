@@ -18,10 +18,11 @@ class TaskController {
         }
     }
 
-    // Récupérer les tâches depuis MySQL ou MongoDB
-    public function getTasks($userId, $source = "mysql") {
+    // Récupérer les tâches depuis MySQL
+    public function getTasks($userId) {
         try {
-            $tasks = $this->taskService->getTasksByUser($userId, $source);
+            // Appeler directement MySQL pour récupérer les tâches
+            $tasks = $this->taskService->getTasksByUser($userId);
             
             // Vérifie si des tâches existent
             if (empty($tasks)) {
