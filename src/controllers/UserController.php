@@ -56,6 +56,11 @@ namespace Controllers;
         
                 global $conn;
         
+                // Affiche les données reçues pour vérifier
+                echo "Email: " . $email . "<br>";
+                echo "Username: " . $username . "<br>";
+                echo "Password: " . $password . "<br>";
+        
                 if (!$conn) {
                     die("La connexion à la base de données a échoué.");
                 }
@@ -78,7 +83,11 @@ namespace Controllers;
                         session_start();  // Démarrer la session ici pour l'utiliser
                         $_SESSION['user_id'] = $user['id'];
                         $_SESSION['username'] = $user['username'];
-                        // Redirection vers la page principale après connexion
+        
+                        // Affiche que la connexion est réussie
+                        echo "Connexion réussie !";
+        
+                        // Ajouter une redirection explicite
                         header("Location: /html/main.html");
                         exit();  // Assure-toi que l'exécution s'arrête après la redirection
                     } else {
@@ -89,6 +98,7 @@ namespace Controllers;
                 }
             }
         }
+        
         
 
         public function getProfile() {
