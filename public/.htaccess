@@ -4,9 +4,3 @@ RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php?/$1 [L]
-
-# Afficher les erreurs PHP
-php_flag display_errors on
-php_flag log_errors on
-php_value error_log /tmp/php_errors.log
-
