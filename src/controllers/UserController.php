@@ -123,59 +123,67 @@ namespace Controllers;
             session_start();  // Démarrer la session ici aussi
             session_regenerate_id(true);  // 🔄 Sécurise la session
         
-            var_dump($_SESSION);  // Afficher les informations de session pour débogage
-            var_dump($_POST);  // Afficher les données envoyées par le formulaire pour débogage
-        
+            // Vérifier si l'utilisateur est connecté
             if (!isset($_SESSION['user_id'])) {
                 die("Erreur : L'utilisateur n'est pas connecté.");
             }
         
-            if (!isset($_POST['username'], $_POST['email'])) {
-                die("Erreur : Informations utilisateur incomplètes.");
+            // Vérifier si les données sont envoyées via POST
+            if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        
+                // Vérifier que les champs nécessaires sont présents
+                if (!isset($_POST['username'], $_POST['email'])) {
+                    die("Erreur : Informations utilisateur incomplètes.");
+                }
+        
+                // Récupérer les données du formulaire
+                $userId = $_SESSION['user_id'];
+                $username = trim($_POST['username']);
+                $email = trim($_POST['email']);
+                $password = isset($_POST['password']) && !empty($_POST['password']) 
+                    ? password_hash($_POST['password'], PASSWORD_BCRYPT) 
+                    : null;
+        
+                global $conn;
+        
+                // Vérifier que la connexion à la base de données est active
+                if (!$conn) {
+                    die("Erreur : La connexion à la base de données est introuvable.");
+                }
+        
+                // Construire la requête SQL pour mettre à jour le profil
+                if ($password) {
+                    // Si un mot de passe est fourni, on l'ajoute à la requête
+                    $sql = "UPDATE users SET username = ?, email = ?, password = ? WHERE id = ?";
+                } else {
+                    // Sinon, on met à jour seulement le nom d'utilisateur et l'email
+                    $sql = "UPDATE users SET username = ?, email = ? WHERE id = ?";
+                }
+        
+                $stmt = $conn->prepare($sql);
+                if (!$stmt) {
+                    die("Erreur lors de la préparation de la requête : " . $conn->error);
+                }
+        
+                // Lier les paramètres
+                if ($password) {
+                    $stmt->bind_param("sssi", $username, $email, $password, $userId);
+                } else {
+                    $stmt->bind_param("ssi", $username, $email, $userId);
+                }
+        
+                // Exécuter la requête
+                if ($stmt->execute()) {
+                    // Rediriger vers la page de profil après la mise à jour réussie
+                    header("Location: /html/profile.html");
+                    exit();  // S'assurer que l'exécution s'arrête après la redirection
+                } else {
+                    die("Erreur lors de la mise à jour du profil : " . $stmt->error);
+                }
+        
+                $stmt->close();
             }
-        
-            $userId = $_SESSION['user_id'];
-            $username = trim($_POST['username']);
-            $email = trim($_POST['email']);
-            $password = isset($_POST['password']) && !empty($_POST['password']) 
-                ? password_hash($_POST['password'], PASSWORD_BCRYPT) 
-                : null;
-        
-            global $conn;
-        
-            // Vérifier que la connexion est bien active
-            if (!$conn) {
-                die("Erreur : La connexion à la base de données est introuvable.");
-            }
-        
-            // Construire la requête SQL
-            if ($password) {
-                $sql = "UPDATE users SET username = ?, email = ?, password = ? WHERE id = ?";
-            } else {
-                $sql = "UPDATE users SET username = ?, email = ? WHERE id = ?";
-            }
-        
-            $stmt = $conn->prepare($sql);
-            if (!$stmt) {
-                die("Erreur lors de la préparation de la requête : " . $conn->error);
-            }
-        
-            // Liaison des paramètres
-            if ($password) {
-                $stmt->bind_param("sssi", $username, $email, $password, $userId);
-            } else {
-                $stmt->bind_param("ssi", $username, $email, $userId);
-            }
-        
-            // Exécuter la requête
-            if ($stmt->execute()) {
-                header("Location: index.php?action=profile");  
-                exit();  // S'assurer que l'exécution s'arrête après la redirection
-            } else {
-                die("Erreur lors de la mise à jour du profil : " . $stmt->error);
-            }
-        
-            $stmt->close();
         }
+        
     }
     ?>
