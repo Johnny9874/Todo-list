@@ -78,8 +78,7 @@
                         session_start();  // Démarrer la session ici pour l'utiliser
                         $_SESSION['user_id'] = $user['id'];
                         $_SESSION['username'] = $user['username'];
-                        echo "Connexion réussie !";
-                        // Redirection vers le tableau de bord ou la page principale après connexion
+                        // Redirection vers la page principale après connexion
                         header("Location: /html/main.html");
                         exit();  // Assure-toi que l'exécution s'arrête après la redirection
                     } else {
