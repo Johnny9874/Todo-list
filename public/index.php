@@ -20,4 +20,10 @@ if (isset($_GET['action']) && $_GET['action'] === 'register') {
     echo "Appel à la méthode register() du contrôleur.<br>";  // Vérification de l'appel à la méthode
     $controller->register();
 }
+
+// Vérifier si l'action de profil est demandée
+if (isset($_GET['action']) && $_GET['action'] === 'profile') {
+    echo "Appel à la méthode getProfile() du contrôleur.<br>";
+    $controller->getProfile();  // Appel de la méthode qui gère le profil
+}
 ?>

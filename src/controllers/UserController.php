@@ -113,11 +113,9 @@ namespace Controllers;
                 exit();
             }
             
-            // L'utilisateur est connecté, renvoyer ses informations
-            return [
-                'user_id' => $_SESSION['user_id'],
-                'username' => $_SESSION['username']
-            ];
+             // L'utilisateur est connecté, on peut afficher la page de profil
+            header("Location: /html/profile.html");
+            exit();
         }    
 
         // Méthode pour mettre à jour le profil d'un utilisateur
