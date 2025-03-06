@@ -1,6 +1,8 @@
 <?php
-ini_set('display_errors', 1);
-error_reporting(E_ALL);
+ini_set('display_errors', 1);  // Afficher les erreurs PHP
+error_reporting(E_ALL);         // Afficher toutes les erreurs
+ini_set('log_errors', 1);       // Activer la journalisation des erreurs
+ini_set('error_log', '/tmp/php_errors.log');  // Spécifier où enregistrer les erreurs
 
 session_start();
 session_regenerate_id(true);
