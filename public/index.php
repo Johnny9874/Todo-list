@@ -14,4 +14,10 @@ if (isset($_GET['action']) && $_GET['action'] === 'login') {
     echo "Appel à la méthode login() du contrôleur.<br>";  // Vérification de l'appel à la méthode
     $controller->login();
 }
+
+// Vérifier si l'action d'inscription est demandée
+if (isset($_GET['action']) && $_GET['action'] === 'register') {
+    echo "Appel à la méthode register() du contrôleur.<br>";  // Vérification de l'appel à la méthode
+    $controller->register();
+}
 ?>
