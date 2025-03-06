@@ -9,27 +9,27 @@ use Controllers\UserController;
 
 $controller = new UserController();
 
-// Vérifier si l'action de connexion est demandée
-if (isset($_GET['action']) && $_GET['action'] === 'login') {
-    echo "Appel à la méthode login() du contrôleur.<br>";  // Vérification de l'appel à la méthode
-    $controller->login();
-}
-
-// Vérifier si l'action d'inscription est demandée
-if (isset($_GET['action']) && $_GET['action'] === 'register') {
-    echo "Appel à la méthode register() du contrôleur.<br>";  // Vérification de l'appel à la méthode
-    $controller->register();
-}
-
-// Vérifier si l'action de profil est demandée
-if (isset($_GET['action']) && $_GET['action'] === 'profile') {
-    echo "Appel à la méthode getProfile() du contrôleur.<br>";
-    $controller->getProfile();  // Appel de la méthode qui gère le profil
-}
-
-// Vérifier si l'action de profil est demandée
-if (isset($_GET['action']) && $_GET['action'] === 'profile') {
-    echo "Appel à la méthode getProfile() du contrôleur.<br>";
-    $controller->getProfile();  // Appel de la méthode qui gère le profil
+// Vérifier l'action demandée et appeler la méthode correspondante
+if (isset($_GET['action'])) {
+    switch ($_GET['action']) {
+        case 'login':
+            echo "Appel à la méthode login() du contrôleur.<br>";
+            $controller->login();
+            break;
+        case 'register':
+            echo "Appel à la méthode register() du contrôleur.<br>";
+            $controller->register();
+            break;
+        case 'updateProfile':
+            echo "Appel à la méthode updateProfile() du contrôleur.<br>";
+            $controller->updateProfile();  // Appel de la méthode pour mettre à jour le profil
+            break;
+        case 'profile':
+            echo "Appel à la méthode getProfile() du contrôleur.<br>";
+            $controller->getProfile();  // Appel de la méthode qui gère le profil
+            break;
+        default:
+            echo "Action non reconnue.<br>";
+    }
 }
 ?>
