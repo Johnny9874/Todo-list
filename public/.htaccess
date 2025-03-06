@@ -4,8 +4,3 @@ RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^(.*)$ index.php?/$1 [L]
-
-# Assurez-vous que PHP est bien configuré pour les erreurs (si nécessaire)
-# Par exemple, pour activer les erreurs en développement local :
-# php_flag display_errors on
-# php_value error_reporting 32767

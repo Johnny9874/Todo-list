@@ -2,7 +2,7 @@
 global $conn;
 
 // Récupérer les informations de connexion depuis l'environnement Heroku (JawsDB)
-$url = getenv('JAWSDB_URL');
+$url = getenv('DATABASE_URL');
 
 if (!$url) {
     die("Erreur : La variable d'environnement JAWSDB_URL n'est pas définie.");
