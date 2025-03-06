@@ -10,43 +10,46 @@ namespace Controllers;
         public function register() {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 global $conn;
+       
                 // Vérifier que les champs sont remplis
                 if (!isset($_POST['username'], $_POST['email'], $_POST['password'])) {
                     die("Erreur : Tous les champs doivent être remplis.");
                 }
-
+       
                 $username = trim($_POST['username']);
                 $email = trim($_POST['email']);
                 $password = password_hash($_POST['password'], PASSWORD_BCRYPT);
-
-                global $conn;
-
-                // Vérifier que la connexion est bien active
+       
+                // Vérifier que la connexion à la base de données est active
                 if (!$conn) {
                     die("Erreur : La connexion à la base de données est introuvable.");
                 }
-
+       
                 // Préparer la requête SQL
                 $sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
                 $stmt = $conn->prepare($sql);
-
+       
                 if (!$stmt) {
                     die("Erreur lors de la préparation de la requête : " . $conn->error);
                 }
-
+       
                 $stmt->bind_param("sss", $username, $email, $password);
-
+       
+                // Exécuter la requête
                 if ($stmt->execute()) {
-                    echo "Utilisateur inscrit avec succès!";
+                    // Rediriger vers la page de connexion après l'inscription réussie
+                    header("Location: /html/login.html");
+                    exit();  // Assurer que l'exécution s'arrête après la redirection
                 } else {
                     echo "Erreur lors de l'inscription : " . $stmt->error;
                 }
-
+       
                 $stmt->close();
             } else {
                 include __DIR__ . '/../public/html/register.html';
             }
         }
+       
 
         public function login() {
             if ($_SERVER['REQUEST_METHOD'] === 'POST') {
