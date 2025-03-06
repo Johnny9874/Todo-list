@@ -73,13 +73,13 @@ class UserController {
             if ($result->num_rows === 1) {
                 $user = $result->fetch_assoc();
                 if (password_verify($password, $user['password'])) {
-                    session_start();
+                    session_start();  // Démarrer la session ici pour l'utiliser
                     $_SESSION['user_id'] = $user['id'];
                     $_SESSION['username'] = $user['username'];
                     echo "Connexion réussie !";
-                    // Redirection vers le tableau de bord ou une autre page après connexion
+                    // Redirection vers le tableau de bord ou la page principale après connexion
                     header("Location: /html/main.html");
-                    exit();
+                    exit();  // Assure-toi que l'exécution s'arrête après la redirection
                 } else {
                     echo "Mot de passe incorrect.";
                 }
@@ -90,7 +90,7 @@ class UserController {
     }
 
     public function getProfile() {
-        session_start();
+        session_start();  // Vérifier que la session est déjà démarrée
     
         if (!isset($_SESSION['user_id'])) {
             // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
@@ -105,11 +105,11 @@ class UserController {
 
     // Méthode pour mettre à jour le profil d'un utilisateur
     public function updateProfile() {
-        session_start();
+        session_start();  // Démarrer la session ici aussi
         session_regenerate_id(true);  // 🔄 Sécurise la session
     
-        var_dump($_SESSION);
-        var_dump($_POST);
+        var_dump($_SESSION);  // Afficher les informations de session pour débogage
+        var_dump($_POST);  // Afficher les données envoyées par le formulaire pour débogage
     
         if (!isset($_SESSION['user_id'])) {
             die("Erreur : L'utilisateur n'est pas connecté.");
@@ -155,7 +155,7 @@ class UserController {
         // Exécuter la requête
         if ($stmt->execute()) {
             header("Location: index.php?action=profile");  
-            exit();
+            exit();  // S'assurer que l'exécution s'arrête après la redirection
         } else {
             die("Erreur lors de la mise à jour du profil : " . $stmt->error);
         }
