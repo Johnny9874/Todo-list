@@ -1,27 +1,29 @@
 <?php
 global $conn;
 
-// Récupérer les informations de connexion depuis l'environnement Heroku (DATABASE_URL)
 $url = getenv('DATABASE_URL');
 
 if (!$url) {
+    error_log("La variable d'environnement DATABASE_URL n'est pas définie.");
     die("Erreur : La variable d'environnement DATABASE_URL n'est pas définie.");
 }
 
-// Analyser l'URL de connexion
 $url = parse_url($url);
 
 $host = $url['host'];
-$port = isset($url['port']) ? $url['port'] : 3306; // Port par défaut de MySQL
-$dbname = ltrim($url['path'], '/');  // Supprimer le premier '/' du nom de la base de données
+$port = isset($url['port']) ? $url['port'] : 3306;
+$dbname = ltrim($url['path'], '/');
 $username = $url['user'];
 $password = $url['pass'];
 
 // Connexion à MySQL via mysqli
 $conn = new mysqli($host, $username, $password, $dbname, $port);
 
-// Vérification de la connexion
 if ($conn->connect_error) {
+    error_log("Erreur de connexion à la base de données : " . $conn->connect_error); // Enregistrer l'erreur
     die("La connexion à la base de données a échoué : " . $conn->connect_error);
+} else {
+    error_log("Connexion à la base de données réussie !");
 }
+
 ?>
