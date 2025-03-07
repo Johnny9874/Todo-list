@@ -1,6 +1,7 @@
 <?php
 namespace Services;
-use Dao\TaskDAO;  // Ou le bon namespace
+
+use Dao\TaskDAO; // Assurez-vous du bon namespace de TaskDAO
 
 class TaskService {
     private $taskDAO;  // Gestion MySQL
@@ -40,8 +41,7 @@ class TaskService {
     
         $stmt->close();
     }
-    
-    
+}
 
     // Récupérer les tâches de MySQL
     public function getTasksByUser($userId) {
