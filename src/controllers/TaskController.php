@@ -8,10 +8,24 @@ class TaskController {
         $this->taskService = new TaskService();
     }
 
-    public function addTask($title, $description, $userId) {
+    public function addTask() {
         try {
-            // Ajouter la tâche en base de données
-            $taskId = $this->taskService->addTask($title, $description, $userId);
+            // Récupérer les données JSON envoyées par le client
+            $data = json_decode(file_get_contents("php://input"), true); // Lire les données JSON depuis la requête
+    
+            if (!isset($data['title'], $data['description'], $data['priority'], $data['status'], $data['due_date'])) {
+                throw new Exception('Les données requises sont manquantes');
+            }
+    
+            $title = $data['title'];
+            $description = $data['description'];
+            $priority = $data['priority'];
+            $status = $data['status'];
+            $due_date = $data['due_date'];
+            $userId = 1;  // Assurez-vous d'obtenir l'ID utilisateur actuel, probablement à partir de la session
+    
+            // Appeler la méthode dans le service pour ajouter la tâche
+            $taskId = $this->taskService->addTask($title, $description, $userId, $priority, $status, $due_date, json_encode($data));
     
             // Récupérer la tâche ajoutée pour la renvoyer en réponse
             $task = $this->taskService->getTaskById($taskId);
@@ -29,6 +43,7 @@ class TaskController {
             ]);
         }
     }
+    
     
     
 
