@@ -10,44 +10,53 @@ class TaskController {
 
     public function addTask() {
         try {
-            // Lire les données JSON
+            // Lire les données JSON envoyées
             $data = json_decode(file_get_contents("php://input"), true);
-            error_log("Données reçues : " . print_r($data, true)); // Ajouter un log pour vérifier les données
     
-            // Vérifier si les champs sont présents
+            // Log des données reçues pour débogage
+            error_log("Données reçues : " . print_r($data, true));
+    
+            // Vérification si les champs sont présents
             if (!isset($data['title'], $data['description'], $data['priority'], $data['status'], $data['due_date'])) {
                 throw new Exception('Les données requises sont manquantes');
             }
     
-            // Récupérer les données
+            // Extraire les données
             $title = $data['title'];
             $description = $data['description'];
             $priority = $data['priority'];
             $status = $data['status'];
             $due_date = $data['due_date'];
-            $userId = 1;  // L'ID de l'utilisateur peut venir de la session
+            $userId = 1;  // Id de l'utilisateur, tu devrais probablement utiliser la session ici
     
-            // Ajouter la tâche
+            // Ajouter la tâche à la base de données via le service
             $taskId = $this->taskService->addTask($title, $description, $userId, $priority, $status, $due_date, json_encode($data));
     
             // Récupérer la tâche ajoutée
             $task = $this->taskService->getTaskById($taskId);
-            error_log("Tâche ajoutée : " . print_r($task, true)); // Ajouter un log pour vérifier les données de la tâche
     
-            // Réponse JSON avec la tâche ajoutée
+            // Log des données de la tâche ajoutée pour débogage
+            error_log("Tâche ajoutée : " . print_r($task, true));
+    
+            // Répondre avec la tâche ajoutée
             header('Content-Type: application/json');
             echo json_encode([
                 'success' => true,
                 'task' => $task
             ]);
         } catch (Exception $e) {
-            error_log("Erreur : " . $e->getMessage()); // Log l'erreur
+            // Log des erreurs pour débogage
+            error_log("Erreur : " . $e->getMessage());
+    
+            // Répondre avec une erreur JSON
+            header('Content-Type: application/json');
             echo json_encode([
                 'success' => false,
                 'message' => $e->getMessage()
             ]);
         }
     }
+    
     
     
     

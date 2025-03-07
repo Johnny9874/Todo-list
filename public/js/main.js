@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 function addTask(event) {
-    console.log("Formulaire soumis");  // Vérification si la fonction est appelée
     event.preventDefault(); // Empêcher la soumission du formulaire par défaut
 
     const title = document.getElementById("title").value;
@@ -32,9 +31,15 @@ function addTask(event) {
         },
         body: JSON.stringify(taskData)
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) {
+            throw new Error('Erreur HTTP: ' + response.status);
+        }
+        return response.json(); // Tenter de convertir la réponse en JSON
+    })
     .then(data => {
-        console.log(data);  // Vérifie ce que le serveur renvoie
+        console.log('Données reçues du serveur:', data); // Afficher la réponse du serveur
+
         if (data.success) {
             alert('Tâche ajoutée avec succès');
             // Ajouter la tâche à l'interface utilisateur si nécessaire
@@ -46,6 +51,8 @@ function addTask(event) {
         }
     })
     .catch(error => {
+        console.error('Erreur lors de l\'ajout de la tâche:', error); // Afficher l'erreur dans la console
         alert('Erreur lors de l\'ajout de la tâche : ' + error.message);
     });
 }
+
