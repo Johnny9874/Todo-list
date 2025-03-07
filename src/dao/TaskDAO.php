@@ -106,5 +106,22 @@ class TaskDAO {
         $stmt->close();
         return $task;
     }
+    // Dans Dao\TaskDAO.php
+    public function getTaskById($taskId) {
+    global $conn;
+    
+    $sql = "SELECT * FROM tasks WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $taskId);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    if ($result->num_rows > 0) {
+        return $result->fetch_assoc();
+    }
+
+    return null;
+}
+
 }
 ?>

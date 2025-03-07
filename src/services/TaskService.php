@@ -76,5 +76,10 @@ class TaskService {
         // Supprimer en MySQL
         $this->taskDAO->deleteTask($taskId);
     }
+    // Dans Services\TaskService.php
+    public function getTaskById($taskId) {
+        return $this->taskDAO->getTaskById($taskId); // Assurez-vous que la méthode existe dans TaskDAO
+    }
+
 }
 ?>
