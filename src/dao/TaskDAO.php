@@ -1,6 +1,6 @@
 <?php
 // Connexion à la base de données MySQL
-require_once __DIR__ . '/../db.php';  // Inclure le fichier de connexion MySQL
+namespace Services;  // Assure-toi que le namespace est 'Services' si c'est ainsi que tu l'as défini dans composer.json
 
 class TaskDAO {
 
