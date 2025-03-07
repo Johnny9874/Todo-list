@@ -1,33 +1,30 @@
 <?php
-ini_set('display_errors', 1);  // Afficher les erreurs PHP
-error_reporting(E_ALL);         // Afficher toutes les erreurs
+// Désactiver l'affichage des erreurs pour éviter des sorties non JSON
+ini_set('display_errors', 0);  // Désactive l'affichage des erreurs PHP
+error_reporting(E_ALL);         // Active l'enregistrement des erreurs dans le fichier log
 
 require_once __DIR__ . '/../vendor/autoload.php';
-use Controllers\UserController;
+use Controllers\TaskController;
 
-$controller = new UserController();
+$controller = new TaskController();
 
 // Vérifier l'action demandée et appeler la méthode correspondante
 if (isset($_GET['action'])) {
     switch ($_GET['action']) {
-        case 'login':
-            echo "Appel à la méthode login() du contrôleur.<br>";
-            $controller->login();
+        case 'addTask':
+            $controller->addTask();  // Appel de la méthode pour ajouter une tâche
             break;
-        case 'register':
-            echo "Appel à la méthode register() du contrôleur.<br>";
-            $controller->register();
-            break;
-        case 'updateProfile':
-            echo "Appel à la méthode updateProfile() du contrôleur.<br>";
-            $controller->updateProfile();  // Appel de la méthode pour mettre à jour le profil
-            break;
-        case 'profile':
-            echo "Appel à la méthode getProfile() du contrôleur.<br>";
-            $controller->getProfile();  // Appel de la méthode qui gère le profil
-            break;
+        // Autres actions...
         default:
-            echo "Action non reconnue.<br>";
+            // Retourner un JSON valide avec une erreur
+            header('Content-Type: application/json');
+            echo json_encode(['success' => false, 'message' => 'Action non reconnue.']);
+            break;
     }
+} else {
+    // En cas de requête sans action
+    header('Content-Type: application/json');
+    echo json_encode(['success' => false, 'message' => 'Aucune action spécifiée.']);
 }
+
 ?>
