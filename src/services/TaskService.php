@@ -13,6 +13,14 @@ class TaskService {
 
     public function addTask($title, $description, $userId, $priority, $status, $due_date, $task_data) {
         global $conn;
+
+        // Vérifie si l'utilisateur est connecté en vérifiant la session
+    if (!isset($_SESSION['user_id'])) {
+        throw new Exception("Utilisateur non connecté.");
+    }
+
+    // Récupère l'ID de l'utilisateur connecté
+    $userId = $_SESSION['user_id'];
         
         // Vérifier si l'utilisateur existe
         $sql = "SELECT id FROM users WHERE id = ?";
