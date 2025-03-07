@@ -2,7 +2,8 @@
 ini_set('display_errors', 1);  // Afficher les erreurs PHP
 error_reporting(E_ALL);         // Afficher toutes les erreurs
 
-require_once __DIR__ . '/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php'; // Ceci doit être là pour charger l'autoloader de Composer
+
 
 // Si tu utilises des namespaces dans tes fichiers, il faut les importer ici
 use Controllers\UserController;
