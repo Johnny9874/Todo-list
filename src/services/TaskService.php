@@ -1,4 +1,5 @@
 <?php
+namespace Services;
 require_once __DIR__ . '/../dao/TaskDAO.php'; // Utilisation de __DIR__ pour le chemin relatif
 
 class TaskService {
