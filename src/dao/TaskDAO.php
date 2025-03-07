@@ -2,6 +2,8 @@
 // Connexion à la base de données MySQL
 namespace Dao;  // Assure-toi que le namespace est 'Services' si c'est ainsi que tu l'as défini dans composer.json
 
+use Exception;
+
 class TaskDAO {
 
     public function addTask($title, $description, $userId, $priority, $status, $due_date, $task_data) {
@@ -97,7 +99,7 @@ class TaskDAO {
         $result = $stmt->get_result();
 
         if ($result->num_rows === 0) {
-            return null;
+            return null; // Aucune tâche trouvée
         }
 
         $task = $result->fetch_assoc();

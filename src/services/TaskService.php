@@ -59,7 +59,6 @@ class TaskService {
     
         $stmt->close();
     }
-    
 
     // Récupérer les tâches de MySQL
     public function getTasksByUser($userId) {
@@ -68,6 +67,7 @@ class TaskService {
 
     // Supprimer une tâche en MySQL
     public function deleteTask($taskId) {
+        // Appel à TaskDAO pour obtenir la tâche
         $task = $this->taskDAO->getTaskById($taskId);
         if (!$task) {
             throw new Exception("Tâche non trouvée.");

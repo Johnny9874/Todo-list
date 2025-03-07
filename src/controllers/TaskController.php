@@ -29,7 +29,12 @@ class TaskController {
             $priority = $data['priority'];
             $status = $data['status'];
             $due_date = $data['due_date'];
-            $userId = 1;  // ID de l'utilisateur
+
+            // Récupérer l'ID utilisateur depuis la session
+            if (!isset($_SESSION['user_id'])) {
+                throw new Exception("Utilisateur non connecté.");
+            }
+            $userId = $_SESSION['user_id'];  // Utiliser l'ID de l'utilisateur connecté
     
             // Ajouter la tâche
             $taskId = $this->taskService->addTask($title, $description, $userId, $priority, $status, $due_date, json_encode($data));
@@ -51,11 +56,6 @@ class TaskController {
             ]);
         }
     }
-    
-    
-    
-    
-    
     
     // Récupérer les tâches depuis MySQL
     public function getTasks($userId) {
