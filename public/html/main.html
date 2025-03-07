@@ -14,29 +14,30 @@
             <form id="addTaskForm">
                 <label for="title">Titre de la tâche :</label>
                 <input type="text" id="title" name="title" required><br>
-              
+                
                 <label for="description">Description :</label>
                 <textarea id="description" name="description"></textarea><br>
-              
+                
                 <label for="priority">Priorité :</label>
                 <select id="priority" name="priority">
-                  <option value="low">Faible</option>
-                  <option value="medium">Moyenne</option>
-                  <option value="high">Haute</option>
+                    <option value="low">Faible</option>
+                    <option value="medium">Moyenne</option>
+                    <option value="high">Haute</option>
                 </select><br>
-              
+                
                 <label for="status">État :</label>
                 <select id="status" name="status">
-                  <option value="pending">En attente</option>
-                  <option value="in_progress">En cours</option>
-                  <option value="completed">Terminé</option>
+                    <option value="pending">En attente</option>
+                    <option value="in_progress">En cours</option>
+                    <option value="completed">Terminé</option>
                 </select><br>
-              
+                
                 <label for="due_date">Date limite :</label>
                 <input type="datetime-local" id="due_date" name="due_date"><br>
-              
+                
                 <button type="submit">Ajouter la tâche</button>
-              </form>
+            </form>
+            
         </div>
     </div>
     <script src="..\js\main.js"></script>

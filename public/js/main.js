@@ -1,5 +1,9 @@
-function addTask() {
-    const title = inputBox.value;
+const form = document.getElementById("addTaskForm");  // Formulaire pour ajouter une tâche
+
+form.addEventListener("submit", function(event) {
+    event.preventDefault();  // Empêche le formulaire de soumettre de manière traditionnelle
+
+    const title = document.getElementById("title").value;
     const description = document.getElementById("description").value;
     const priority = document.getElementById("priority").value;
     const status = document.getElementById("status").value;
@@ -10,24 +14,36 @@ function addTask() {
         description: description,
         priority: priority,
         status: status,
-        due_date: due_date,
-        task_data: { priority, status, due_date }  // Les données supplémentaires qui seront stockées en JSON
+        due_date: due_date
     };
 
-    // Envoi via fetch
-    fetch('/src/controllers/TaskController.php?action=addTask', {
+    // Envoie de la tâche au backend via AJAX
+    fetch('/index.php?action=addTask', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
         body: JSON.stringify(taskData)
     })
-    .then(response => response.json())
+    .then(response => response.json())  // Récupérer la réponse JSON
     .then(data => {
-        console.log('Task added:', data);
-        showTasks();  // Rafraîchit la liste des tâches
+        if (data.success) {
+            alert("Tâche ajoutée avec succès");
+            addTaskToDOM(data.task);  // Ajoute la tâche au DOM
+        } else {
+            alert("Erreur lors de l'ajout de la tâche");
+        }
     })
     .catch(error => {
-        console.error('Error adding task:', error);
+        console.error('Error:', error);
+        alert('Une erreur s\'est produite.');
     });
+});
+
+// Fonction pour ajouter une tâche au DOM
+function addTaskToDOM(task) {
+    const listContainer = document.getElementById("list-container");
+    let li = document.createElement("li");
+    li.textContent = task.title; // Affiche le titre de la tâche
+    listContainer.appendChild(li);
 }
