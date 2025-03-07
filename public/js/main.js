@@ -6,6 +6,7 @@ function addTask(event) {
     const priority = document.getElementById("priority").value;
     const status = document.getElementById("status").value;
     const dueDate = document.getElementById("due_date").value;
+    const listContainer = document.getElementById("list-container"); // Récupérer le conteneur de la liste des tâches
 
     const taskData = {
         title: title,
