@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../services/TaskService.php';  // Utilise ce chemin, mais assure-toi qu'il est correct par rapport à ton dossier
+require_once dirname(__DIR__) . '/services/TaskService.php'; // Utilisation de dirname pour s'assurer du bon chemin
 
 class TaskController {
     private $taskService;
