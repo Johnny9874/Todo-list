@@ -1,4 +1,3 @@
-// Fonction pour ajouter une tâche via fetch
 function addTask() {
     const title = document.getElementById("title").value;
     const description = document.getElementById("description").value;
@@ -14,19 +13,25 @@ function addTask() {
         due_date: dueDate
     };
 
+    console.log(taskData); // Afficher les données avant d'envoyer la requête
+
     fetch('/index.php?action=addTask', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(taskData) // Conversion en JSON avant d'envoyer
+        body: JSON.stringify(taskData)
     })
     .then(response => response.json())
     .then(data => {
         if (data.success) {
             alert('Tâche ajoutée avec succès');
             // Ajouter la tâche à l'interface utilisateur si nécessaire
-        } else {
+            // Créer un nouvel élément de tâche dans le DOM
+            const newTask = document.createElement("li");
+            newTask.textContent = data.task.title; // Utiliser le titre renvoyé par la réponse JSON
+            listContainer.appendChild(newTask);
+            } else {
             alert('Erreur : ' + data.message);
         }
     })
