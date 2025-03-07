@@ -41,7 +41,6 @@ class TaskService {
     
         $stmt->close();
     }
-}
 
     // Récupérer les tâches de MySQL
     public function getTasksByUser($userId) {
