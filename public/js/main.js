@@ -26,33 +26,29 @@ function addTask(event) {
 
     fetch('/index.php?action=addTask', {
         method: 'POST',
+        body: JSON.stringify({
+            title: 'New Task',
+            description: 'Task description',
+            priority: 'high',
+            status: 'pending',
+            due_date: '2025-03-08'
+        }),
         headers: {
             'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(taskData)
-    })
-    .then(response => {
-        if (!response.ok) {
-            throw new Error('Erreur HTTP: ' + response.status);
         }
-        return response.json(); // Tenter de convertir la réponse en JSON
     })
+    .then(response => response.json()) // Convertit la réponse en JSON
     .then(data => {
-        console.log('Données reçues du serveur:', data); // Afficher la réponse du serveur
-
         if (data.success) {
-            alert('Tâche ajoutée avec succès');
-            // Ajouter la tâche à l'interface utilisateur si nécessaire
-            const newTask = document.createElement("li");
-            newTask.textContent = data.task.title; // Utiliser le titre renvoyé par la réponse JSON
-            listContainer.appendChild(newTask);
+            alert('Tâche ajoutée avec succès!');
+            console.log(data.task); // Vous devriez pouvoir voir l'objet task ici
+            // Faites quelque chose avec la tâche, comme l'afficher dans l'interface utilisateur
         } else {
-            alert('Erreur : ' + data.message);
+            alert('Erreur lors de l\'ajout de la tâche : ' + data.message);
         }
     })
     .catch(error => {
-        console.error('Erreur lors de l\'ajout de la tâche:', error); // Afficher l'erreur dans la console
-        alert('Erreur lors de l\'ajout de la tâche : ' + error.message);
-    });
+        console.log('Erreur dans la requête AJAX : ' + error);
+    });    
 }
 

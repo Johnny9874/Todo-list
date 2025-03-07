@@ -71,7 +71,10 @@ class TaskController {
 
             // Affichage sous forme JSON
             header('Content-Type: application/json');
-            echo json_encode($tasks);
+            echo json_encode([
+                'success' => true,
+                'task' => $task
+            ]);
         } catch (Exception $e) {
             echo "❌ Erreur : " . $e->getMessage();
         }
