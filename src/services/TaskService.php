@@ -10,14 +10,15 @@ class TaskService {
     }
 
     // Ajouter une tâche dans MySQL
-    public function addTask($title, $description, $userId) {
+    public function addTask($title, $description, $userId, $priority, $status, $due_date, $task_data) {
         if (empty($title)) {
             throw new Exception("Le titre de la tâche est obligatoire.");
         }
-
-        // Ajouter en MySQL
-        $this->taskDAO->addTask($title, $description, $userId);
+    
+        // Passer tous les arguments nécessaires à TaskDAO
+        $this->taskDAO->addTask($title, $description, $userId, $priority, $status, $due_date, $task_data);
     }
+    
 
     // Récupérer les tâches de MySQL
     public function getTasksByUser($userId) {
