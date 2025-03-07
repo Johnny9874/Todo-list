@@ -1,4 +1,11 @@
+// Quand le DOM est prêt
+document.addEventListener("DOMContentLoaded", function() {
+    // Attacher la fonction addTask au formulaire
+    document.getElementById('addTaskForm').addEventListener('submit', addTask);
+});
+
 function addTask(event) {
+    console.log("Formulaire soumis");  // Vérification si la fonction est appelée
     event.preventDefault(); // Empêcher la soumission du formulaire par défaut
 
     const title = document.getElementById("title").value;
