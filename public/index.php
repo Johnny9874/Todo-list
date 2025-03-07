@@ -19,6 +19,9 @@ if (isset($_GET['action'])) {
         case 'register':
             $controller->register();
             break;
+        case 'addTask':
+            $controller->addTask();  // Assurez-vous que cette ligne est correcte
+            break;
         case 'updateProfile':
             $controller->updateProfile();  // Appel de la méthode pour mettre à jour le profil
             break;
