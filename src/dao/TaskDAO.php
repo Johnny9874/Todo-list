@@ -4,25 +4,26 @@ require_once __DIR__ . '/../db.php';  // Inclure le fichier de connexion MySQL
 
 class TaskDAO {
 
-    // Ajouter une tâche dans MySQL
-    public function addTask($title, $description, $userId) {
+    public function addTask($title, $description, $userId, $priority, $status, $due_date, $task_data) {
         global $conn;
-
-        $sql = "INSERT INTO tasks (title, description, user_id) VALUES (?, ?, ?)";
+    
+        $sql = "INSERT INTO tasks (title, description, user_id, priority, status, due_date, task_data) 
+                VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);
-
+    
         if ($stmt === false) {
-            die("Erreur lors de la préparation de la requête : " . $conn->error);
+            die("Error preparing the query: " . $conn->error);
         }
-
-        $stmt->bind_param("ssi", $title, $description, $userId);
-
+    
+        $stmt->bind_param("sssisss", $title, $description, $userId, $priority, $status, $due_date, $task_data);
+    
         if (!$stmt->execute()) {
-            die("Erreur lors de l'exécution de la requête : " . $stmt->error);
+            die("Error executing the query: " . $stmt->error);
         }
-
+    
         $stmt->close();
     }
+    
 
     // Récupérer les tâches de MySQL par utilisateur
     public function getTasksByUser($userId) {
