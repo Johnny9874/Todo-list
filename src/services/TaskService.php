@@ -4,8 +4,6 @@ namespace Services;
 use Dao\TaskDAO; // Assurez-vous du bon namespace de TaskDAO
 use Exception;
 
-session_start();  // Démarrer la session
-
 class TaskService {
     private $taskDAO;  // Gestion MySQL
 
@@ -17,12 +15,12 @@ class TaskService {
         global $conn;
 
         // Vérifie si l'utilisateur est connecté en vérifiant la session
-    if (!isset($_SESSION['user_id'])) {
-        throw new Exception("Utilisateur non connecté.");
-    }
+        if (!isset($_SESSION['user_id'])) {
+            throw new Exception("Utilisateur non connecté.");
+        }
 
-    // Récupère l'ID de l'utilisateur connecté
-    $userId = $_SESSION['user_id'];
+        // Récupère l'ID de l'utilisateur connecté depuis la session
+        $userId = $_SESSION['user_id'];
         
         // Vérifier si l'utilisateur existe
         $sql = "SELECT id FROM users WHERE id = ?";

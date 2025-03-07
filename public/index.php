@@ -1,4 +1,6 @@
 <?php
+session_start();  // Démarre la session avant d'utiliser $_SESSION
+
 ini_set('display_errors', 1);  // Afficher les erreurs PHP
 error_reporting(E_ALL);         // Afficher toutes les erreurs
 
@@ -7,14 +9,6 @@ require_once __DIR__ . '/../vendor/autoload.php'; // Ce fichier autoload permet 
 // Si tu utilises des namespaces dans tes fichiers, il faut les importer ici
 use Controllers\UserController;
 use Controllers\TaskController;
-
-session_start();  // Démarrer la session
-
-if (!isset($_SESSION['user_id'])) {
-    // Si l'utilisateur n'est pas connecté, redirige vers la page de connexion
-    header('Location: login.php');
-    exit();
-}
 
 // Créer une instance de UserController
 $userController = new UserController();
@@ -29,6 +23,13 @@ if (isset($_GET['action'])) {
             $userController->register();
             break;
         case 'addTask':
+            // Vérifier si l'utilisateur est connecté avant de procéder
+            if (!isset($_SESSION['user_id'])) {
+                // Rediriger vers la page de connexion si l'utilisateur n'est pas connecté
+                header('Location: login.php');
+                exit();
+            }
+
             $taskController = new TaskController();  // Création de l'objet TaskController
             $taskController->addTask();  // Appel de la méthode pour ajouter la tâche
             break;
