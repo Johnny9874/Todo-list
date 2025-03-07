@@ -1,6 +1,6 @@
 <?php
 namespace Services;
-require_once __DIR__ . '/../dao/TaskDAO.php'; // Utilisation de __DIR__ pour le chemin relatif
+use Services\TaskDAO;  // Ou le bon namespace
 
 class TaskService {
     private $taskDAO;  // Gestion MySQL

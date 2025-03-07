@@ -11,6 +11,10 @@ class ComposerStaticInit560966c49f39688bd8390cc53d0a6875
         array (
             'Services\\' => 9,
         ),
+        'D' => 
+        array (
+            'Dao\\' => 4,
+        ),
         'C' => 
         array (
             'Controllers\\' => 12,
@@ -21,6 +25,10 @@ class ComposerStaticInit560966c49f39688bd8390cc53d0a6875
         'Services\\' => 
         array (
             0 => __DIR__ . '/../..' . '/src/services',
+        ),
+        'Dao\\' => 
+        array (
+            0 => __DIR__ . '/../..' . '/src/dao',
         ),
         'Controllers\\' => 
         array (

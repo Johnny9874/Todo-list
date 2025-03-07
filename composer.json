@@ -8,8 +8,8 @@
 "autoload": {
   "psr-4": {
     "Controllers\\": "src/controllers/",
-    "Services\\": "src/services/"
+    "Services\\": "src/services/",
+    "Dao\\": "src/dao/"
   }
 }
 }
-    
