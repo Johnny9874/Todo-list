@@ -1,4 +1,6 @@
-function addTask() {
+function addTask(event) {
+    event.preventDefault(); // Empêcher la soumission du formulaire par défaut
+
     const title = document.getElementById("title").value;
     const description = document.getElementById("description").value;
     const priority = document.getElementById("priority").value;
@@ -13,7 +15,7 @@ function addTask() {
         due_date: dueDate
     };
 
-    console.log(taskData); // Afficher les données avant d'envoyer la requête
+    console.log("Données de la tâche:", taskData); // Afficher les données avant d'envoyer la requête
 
     fetch('/index.php?action=addTask', {
         method: 'POST',
@@ -27,11 +29,10 @@ function addTask() {
         if (data.success) {
             alert('Tâche ajoutée avec succès');
             // Ajouter la tâche à l'interface utilisateur si nécessaire
-            // Créer un nouvel élément de tâche dans le DOM
             const newTask = document.createElement("li");
             newTask.textContent = data.task.title; // Utiliser le titre renvoyé par la réponse JSON
             listContainer.appendChild(newTask);
-            } else {
+        } else {
             alert('Erreur : ' + data.message);
         }
     })
