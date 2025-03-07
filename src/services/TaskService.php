@@ -4,6 +4,8 @@ namespace Services;
 use Dao\TaskDAO; // Assurez-vous du bon namespace de TaskDAO
 use Exception;
 
+session_start();  // Démarrer la session
+
 class TaskService {
     private $taskDAO;  // Gestion MySQL
 

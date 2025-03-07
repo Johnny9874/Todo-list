@@ -8,6 +8,14 @@ require_once __DIR__ . '/../vendor/autoload.php'; // Ce fichier autoload permet 
 use Controllers\UserController;
 use Controllers\TaskController;
 
+session_start();  // Démarrer la session
+
+if (!isset($_SESSION['user_id'])) {
+    // Si l'utilisateur n'est pas connecté, redirige vers la page de connexion
+    header('Location: login.php');
+    exit();
+}
+
 // Créer une instance de UserController
 $userController = new UserController();
 
