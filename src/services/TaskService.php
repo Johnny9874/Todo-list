@@ -1,6 +1,6 @@
 <?php
 namespace Services;
-use Services\TaskDAO;  // Ou le bon namespace
+use Dao\TaskDAO;  // Ou le bon namespace
 
 class TaskService {
     private $taskDAO;  // Gestion MySQL

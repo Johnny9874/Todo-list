@@ -1,6 +1,6 @@
 <?php
 // Connexion à la base de données MySQL
-namespace Services;  // Assure-toi que le namespace est 'Services' si c'est ainsi que tu l'as défini dans composer.json
+namespace Dao;  // Assure-toi que le namespace est 'Services' si c'est ainsi que tu l'as défini dans composer.json
 
 class TaskDAO {
 
