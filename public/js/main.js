@@ -26,25 +26,17 @@ function addTask(event) {
 
     fetch('/index.php?action=addTask', {
         method: 'POST',
-        body: JSON.stringify(taskData),  // Envoyer les données réelles ici
+        body: JSON.stringify({
+            title: 'New Task',
+            description: 'Task description',
+            priority: 'high',
+            status: 'pending',
+            due_date: '2025-03-08'
+        }),
         headers: {
             'Content-Type': 'application/json'
         }
     })
-    .then(response => response.json()) // Convertir la réponse en JSON
-    .then(data => {
-        if (data.success) {
-            alert('Tâche ajoutée avec succès!');
-            console.log(data.task); // Vous devriez pouvoir voir l'objet task ici
-            // Faites quelque chose avec la tâche, comme l'afficher dans l'interface utilisateur
-        } else {
-            alert('Erreur lors de l\'ajout de la tâche : ' + data.message);
-        }
-    })
-    .catch(error => {
-        console.log('Erreur dans la requête AJAX : ' + error);
-    });    
-}
     .then(response => response.json()) // Convertit la réponse en JSON
     .then(data => {
         if (data.success) {
