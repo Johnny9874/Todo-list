@@ -9,15 +9,38 @@ class TaskService {
         $this->taskDAO = new TaskDAO();  // Instancier MySQL
     }
 
-    // Ajouter une tâche dans MySQL
     public function addTask($title, $description, $userId, $priority, $status, $due_date, $task_data) {
-        if (empty($title)) {
-            throw new Exception("Le titre de la tâche est obligatoire.");
+        global $conn;
+        
+        // Vérifier si l'utilisateur existe
+        $sql = "SELECT id FROM users WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $userId);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        
+        if ($result->num_rows === 0) {
+            throw new Exception("L'utilisateur avec l'ID {$userId} n'existe pas.");
         }
     
-        // Passer tous les arguments nécessaires à TaskDAO
-        $this->taskDAO->addTask($title, $description, $userId, $priority, $status, $due_date, $task_data);
+        // L'utilisateur existe, on peut insérer la tâche
+        $sql = "INSERT INTO tasks (title, description, user_id, priority, status, due_date, task_data) 
+                VALUES (?, ?, ?, ?, ?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+    
+        if ($stmt === false) {
+            die("Error preparing the query: " . $conn->error);
+        }
+    
+        $stmt->bind_param("sssisss", $title, $description, $userId, $priority, $status, $due_date, $task_data);
+    
+        if (!$stmt->execute()) {
+            die("Error executing the query: " . $stmt->error);
+        }
+    
+        $stmt->close();
     }
+    
     
 
     // Récupérer les tâches de MySQL
