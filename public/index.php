@@ -2,12 +2,11 @@
 ini_set('display_errors', 1);  // Afficher les erreurs PHP
 error_reporting(E_ALL);         // Afficher toutes les erreurs
 
-require_once __DIR__ . '/../vendor/autoload.php'; // Ceci doit être là pour charger l'autoloader de Composer
-
+require_once __DIR__ . '/../vendor/autoload.php'; // Ce fichier autoload permet de charger automatiquement les classes
 
 // Si tu utilises des namespaces dans tes fichiers, il faut les importer ici
 use Controllers\UserController;
-use Controllers\TaskController;  // Assurez-vous d'importer TaskController correctement
+use Controllers\TaskController;
 
 // Créer une instance de UserController
 $userController = new UserController();
