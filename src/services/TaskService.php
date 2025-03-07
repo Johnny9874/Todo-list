@@ -1,5 +1,5 @@
 <?php
-require_once '../dao/TaskDAO.php';  // Inclure le fichier TaskDAO pour MySQL
+require_once __DIR__ . '/../dao/TaskDAO.php'; // Utilisation de __DIR__ pour le chemin relatif
 
 class TaskService {
     private $taskDAO;  // Gestion MySQL
