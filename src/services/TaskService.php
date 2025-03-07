@@ -22,7 +22,7 @@ class TaskService {
             throw new Exception('Erreur lors de l\'encodage des données en JSON: ' . json_last_error_msg());
         }
     
-        // L'utilisateur existe, on peut insérer la tâche
+        // Insérer la tâche dans la base de données
         $sql = "INSERT INTO tasks (title, description, user_id, priority, status, due_date, task_data) 
                 VALUES (?, ?, ?, ?, ?, ?, ?)";
         $stmt = $conn->prepare($sql);

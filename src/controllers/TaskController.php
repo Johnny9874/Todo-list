@@ -48,7 +48,8 @@ class TaskController {
                 'message' => $e->getMessage()
             ]);
         }
-    }    
+    }
+    
     
     // Récupérer les tâches depuis MySQL
     public function getTasks($userId) {
