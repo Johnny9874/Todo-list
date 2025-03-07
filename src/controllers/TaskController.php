@@ -11,7 +11,7 @@ class TaskController {
 
     public function addTask() {
         try {
-            // Lire les données JSON
+            // Lire les données JSON envoyées via le formulaire
             $data = json_decode(file_get_contents("php://input"), true);
             
             if ($data === null) {
@@ -29,33 +29,26 @@ class TaskController {
             $priority = $data['priority'];
             $status = $data['status'];
             $due_date = $data['due_date'];
-
-            // Récupérer l'ID utilisateur depuis la session
-            if (!isset($_SESSION['user_id'])) {
-                throw new Exception("Utilisateur non connecté.");
-            }
-            $userId = $_SESSION['user_id'];  // Utiliser l'ID de l'utilisateur connecté
+            $userId = $_SESSION['user_id'];  // Utiliser l'ID de la session
     
             // Ajouter la tâche
-            $taskId = $this->taskService->addTask($title, $description, $userId, $priority, $status, $due_date, json_encode($data));
+            $task = $this->taskService->addTask($title, $description, $userId, $priority, $status, $due_date, $data);
     
             // Récupérer la tâche ajoutée
-            $task = $this->taskService->getTaskById($taskId);
-    
-            // Retourner la tâche en format JSON
+            // (C'est ici que vous devriez récupérer la tâche ajoutée et renvoyer les données)
             header('Content-Type: application/json');
             echo json_encode([
                 'success' => true,
-                'task' => $task
+                'task' => $task  // Retourne l'objet tâche
             ]);
         } catch (Exception $e) {
-            error_log("Erreur : " . $e->getMessage()); // Log de l'erreur
+            error_log("Erreur : " . $e->getMessage());  // Log de l'erreur
             echo json_encode([
                 'success' => false,
                 'message' => $e->getMessage()
             ]);
         }
-    }
+    }    
     
     // Récupérer les tâches depuis MySQL
     public function getTasks($userId) {
