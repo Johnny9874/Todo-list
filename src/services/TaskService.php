@@ -11,10 +11,20 @@ class TaskService {
         $this->taskDAO = new TaskDAO();  // Instancier MySQL
     }
 
-    public function addTask($title, $description, $userId, $priority, $status, $due_date, $task_data) {
+    public function addTask($title, $description, $priority, $status, $due_date, $task_data) {
+        session_start();  // Démarre la session pour récupérer l'ID utilisateur
+        
+        // Vérifier si l'utilisateur est connecté (si la variable de session existe)
+        if (!isset($_SESSION['user_id'])) {
+            throw new Exception("Utilisateur non connecté.");
+        }
+        
+        // Récupérer l'ID utilisateur depuis la session
+        $userId = $_SESSION['user_id'];
+        
         global $conn;
         
-        // Vérifier si l'utilisateur existe
+        // Vérifier si l'utilisateur existe dans la base de données
         $sql = "SELECT id FROM users WHERE id = ?";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("i", $userId);
