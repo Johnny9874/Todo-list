@@ -1,5 +1,6 @@
 <?php
-use services\TaskService;  // Assurez-vous que le namespace est correct
+namespace Controllers;
+use Services\TaskService;  // Assurez-vous que le namespace est correct
 
 class TaskController {
     private $taskService;
