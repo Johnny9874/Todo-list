@@ -12,8 +12,10 @@ class TaskController {
         try {
             // Lire les données JSON
             $data = json_decode(file_get_contents("php://input"), true);
+            
+            error_log("Données reçues : " . print_r($data, true)); // Ajouter un log pour vérifier les données
     
-            // Vérification des données
+            // Vérifier si les champs sont présents
             if (!isset($data['title'], $data['description'], $data['priority'], $data['status'], $data['due_date'])) {
                 throw new Exception('Les données requises sont manquantes');
             }
@@ -28,10 +30,12 @@ class TaskController {
             
             // Ajouter la tâche
             $taskId = $this->taskService->addTask($title, $description, $userId, $priority, $status, $due_date, json_encode($data));
-            
+    
             // Récupérer la tâche ajoutée
             $task = $this->taskService->getTaskById($taskId);
             
+            error_log("Tâche ajoutée : " . print_r($task, true)); // Ajouter un log pour vérifier les données de la tâche
+    
             // Réponse JSON avec la tâche ajoutée
             header('Content-Type: application/json');
             echo json_encode([
@@ -39,16 +43,14 @@ class TaskController {
                 'task' => $task
             ]);
         } catch (Exception $e) {
-            // Log de l'erreur
-            error_log("Erreur : " . $e->getMessage());
-            
-            // Retourner une erreur en JSON
+            error_log("Erreur : " . $e->getMessage()); // Log l'erreur
             echo json_encode([
                 'success' => false,
                 'message' => $e->getMessage()
             ]);
         }
     }
+    
     
     
     // Récupérer les tâches depuis MySQL
