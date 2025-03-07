@@ -27,6 +27,7 @@ function addTask(event) {
     })
     .then(response => response.json())
     .then(data => {
+        console.log(data);  // Vérifie ce que le serveur renvoie
         if (data.success) {
             alert('Tâche ajoutée avec succès');
             // Ajouter la tâche à l'interface utilisateur si nécessaire
