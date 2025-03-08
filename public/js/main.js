@@ -1,6 +1,20 @@
 document.addEventListener("DOMContentLoaded", function() {
     // Attacher la fonction addTask au formulaire
     document.getElementById('addTaskForm').addEventListener('submit', addTask);
+
+    // Récupérer les tâches de l'utilisateur via AJAX
+    fetch('/index.php?action=getUserTasks')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                displayTasks(data.tasks);
+            } else {
+                console.log("Erreur : " + data.message);
+            }
+        })
+        .catch(error => {
+            console.log('Erreur dans la requête AJAX : ' + error);
+        });
 });
 
 function addTask(event) {
@@ -35,6 +49,16 @@ function addTask(event) {
         if (data.success) {
             alert('Tâche ajoutée avec succès!');
             console.log("Tâche ajoutée:", data.task); // Voir l'objet task renvoyé
+            // Récupérer et afficher les tâches après l'ajout
+            fetch('/index.php?action=getUserTasks')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        displayTasks(data.tasks);
+                    } else {
+                        console.log("Erreur : " + data.message);
+                    }
+                });
         } else {
             alert('Erreur lors de l\'ajout de la tâche : ' + data.message);
         }
@@ -43,23 +67,6 @@ function addTask(event) {
         console.log('Erreur dans la requête AJAX : ' + error);
     });    
 }
-
-document.addEventListener("DOMContentLoaded", function() {
-    // Récupérer les tâches de l'utilisateur via AJAX
-    fetch('/index.php?action=getUserTasks')
-    .then(response => response.json())
-    .then(data => {
-        console.log("Données reçues : ", data); // Loguer les données reçues
-        if (data.success) {
-            displayTasks(data.tasks);
-        } else {
-            console.log("Erreur : " + data.message);
-        }
-    })
-    .catch(error => {
-        console.log('Erreur dans la requête AJAX : ' + error);
-    });
-
 
 // Fonction pour afficher les tâches
 function displayTasks(tasks) {

@@ -102,9 +102,6 @@ class TaskController {
     
             // Utiliser TaskService pour récupérer les tâches
             $tasks = $this->taskService->getTasksByUser($userId);
-
-            // Loguer les tâches récupérées
-            error_log("Tâches récupérées : " . print_r($tasks, true));
     
             // Retourner les tâches sous forme de JSON
             header('Content-Type: application/json');
@@ -120,6 +117,47 @@ class TaskController {
             ]);
         }
     }
+    
+    public function addTask() {
+        try {
+            // Lire les données JSON envoyées via le formulaire
+            $data = json_decode(file_get_contents("php://input"), true);
+            
+            if ($data === null) {
+                throw new Exception('Erreur dans le JSON envoyé : ' . json_last_error_msg());
+            }
+    
+            // Vérification des données reçues
+            if (!isset($data['title'], $data['description'], $data['priority'], $data['status'], $data['due_date'])) {
+                throw new Exception('Les données requises sont manquantes');
+            }
+    
+            // Traiter les données
+            $title = $data['title'];
+            $description = $data['description'];
+            $priority = $data['priority'];
+            $status = $data['status'];
+            $due_date = $data['due_date'];
+            $userId = $_SESSION['user_id'];  // Utiliser l'ID de la session
+    
+            // Ajouter la tâche
+            $task = $this->taskService->addTask($title, $description, $userId, $priority, $status, $due_date, $data);
+    
+            // Renvoyer la tâche ajoutée
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => true,
+                'task' => $task
+            ]);
+        } catch (Exception $e) {
+            error_log("Erreur : " . $e->getMessage());
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+    
     
 }
 ?>
