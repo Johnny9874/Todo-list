@@ -20,17 +20,17 @@ function addTask(event) {
         due_date: dueDate
     };
 
-    // Vérifie que taskData contient les bonnes valeurs
+    // Vérifie que taskData contient les bonnes valeurs avant envoi
     console.log("Données de la tâche avant envoi:", taskData);
 
     fetch('/index.php?action=addTask', {
         method: 'POST',
-        body: JSON.stringify(taskData),  // Envoie les bonnes données
+        body: JSON.stringify(taskData),  // Assure-toi que les bonnes données sont envoyées
         headers: {
             'Content-Type': 'application/json'
         }
     })
-    .then(response => response.json()) // Convertir la réponse en JSON
+    .then(response => response.json()) // Convertit la réponse en JSON
     .then(data => {
         if (data.success) {
             alert('Tâche ajoutée avec succès!');
