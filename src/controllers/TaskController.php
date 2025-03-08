@@ -18,7 +18,7 @@ class TaskController {
                 throw new Exception('Erreur dans le JSON envoyé : ' . json_last_error_msg());
             }
     
-            // Loguer les données reçues pour vérification
+            // Afficher les données reçues pour vérification
             error_log("Données reçues dans addTask: " . print_r($data, true));
     
             // Vérification des données reçues
@@ -54,6 +54,7 @@ class TaskController {
             ]);
         }
     }
+    
     
     
     // Récupérer les tâches depuis MySQL
