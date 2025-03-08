@@ -18,6 +18,9 @@ class TaskController {
                 throw new Exception('Erreur dans le JSON envoyé : ' . json_last_error_msg());
             }
     
+            // Loguer les données reçues pour vérification
+            error_log("Données reçues dans addTask: " . print_r($data, true));
+    
             // Vérification des données reçues
             if (!isset($data['title'], $data['description'], $data['priority'], $data['status'], $data['due_date'])) {
                 throw new Exception('Les données requises sont manquantes');
@@ -34,12 +37,14 @@ class TaskController {
             // Ajouter la tâche
             $task = $this->taskService->addTask($title, $description, $userId, $priority, $status, $due_date, $data);
     
-            // Récupérer la tâche ajoutée
-            // (C'est ici que vous devriez récupérer la tâche ajoutée et renvoyer les données)
+            // Loguer l'objet task renvoyé pour vérifier qu'il correspond à ce qu'on attend
+            error_log("Tâche ajoutée : " . print_r($task, true));
+    
+            // Renvoyer la tâche ajoutée
             header('Content-Type: application/json');
             echo json_encode([
                 'success' => true,
-                'task' => $task  // Retourne l'objet tâche
+                'task' => $task
             ]);
         } catch (Exception $e) {
             error_log("Erreur : " . $e->getMessage());  // Log de l'erreur
@@ -48,7 +53,8 @@ class TaskController {
                 'message' => $e->getMessage()
             ]);
         }
-    }    
+    }
+    
     
     // Récupérer les tâches depuis MySQL
     public function getTasks($userId) {
