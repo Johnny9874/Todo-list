@@ -39,6 +39,7 @@ function addTask(event) {
     // Vérifie que taskData contient les bonnes valeurs avant envoi
     console.log("Données de la tâche avant envoi:", taskData);
 
+    // Envoi de la requête POST pour ajouter une tâche
     fetch('/index.php?action=addTask', {
         method: 'POST',
         body: JSON.stringify(taskData),  // Assure-toi que les bonnes données sont envoyées
@@ -46,21 +47,14 @@ function addTask(event) {
             'Content-Type': 'application/json'
         }
     })
-    .then(response => response.json()) // Convertit la réponse en JSON
+    .then(response => {
+        console.log('Réponse brute:', response);  // Log de la réponse brute
+        return response.json();
+    })
     .then(data => {
         if (data.success) {
             alert('Tâche ajoutée avec succès!');
-            console.log("Tâche ajoutée:", data.task);
-            // Appel pour récupérer toutes les tâches après l'ajout
-            fetch('/index.php?action=getUserTasks')
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        displayTasks(data.tasks);
-                    } else {
-                        console.log("Erreur : " + data.message);
-                    }
-                });
+            console.log("Tâche ajoutée:", data.task); // Voir l'objet task renvoyé
         } else {
             alert('Erreur lors de l\'ajout de la tâche : ' + data.message);
         }
@@ -68,6 +62,7 @@ function addTask(event) {
     .catch(error => {
         console.log('Erreur dans la requête AJAX : ' + error);
     });
+    
 }
 
 // Fonction pour afficher les tâches
