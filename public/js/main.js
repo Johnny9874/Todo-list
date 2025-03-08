@@ -43,3 +43,31 @@ function addTask(event) {
         console.log('Erreur dans la requête AJAX : ' + error);
     });    
 }
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Récupérer les tâches de l'utilisateur via AJAX
+    fetch('/index.php?action=getUserTasks')
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                displayTasks(data.tasks);
+            } else {
+                console.log("Erreur : " + data.message);
+            }
+        })
+        .catch(error => {
+            console.log('Erreur dans la requête AJAX : ' + error);
+        });
+});
+
+// Fonction pour afficher les tâches
+function displayTasks(tasks) {
+    const taskList = document.getElementById('task-list');
+    taskList.innerHTML = ''; // Vider la liste avant de la remplir
+
+    tasks.forEach(task => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${task.title} - ${task.description} - ${task.due_date}`;
+        taskList.appendChild(listItem);
+    });
+}

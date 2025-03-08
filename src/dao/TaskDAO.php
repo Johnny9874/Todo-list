@@ -43,26 +43,27 @@ class TaskDAO {
     // Récupérer les tâches de MySQL par utilisateur
     public function getTasksByUser($userId) {
         global $conn;
-
+    
         $sql = "SELECT * FROM tasks WHERE user_id = ?";
         $stmt = $conn->prepare($sql);
-
+    
         if ($stmt === false) {
             die("Erreur lors de la préparation de la requête : " . $conn->error);
         }
-
+    
         $stmt->bind_param("i", $userId);
         $stmt->execute();
         $result = $stmt->get_result();
-
+    
         $tasks = [];
         while ($row = $result->fetch_assoc()) {
             $tasks[] = $row;
         }
-
+    
         $stmt->close();
         return $tasks;
     }
+    
 
     // Supprimer une tâche en MySQL
     public function deleteTask($taskId) {

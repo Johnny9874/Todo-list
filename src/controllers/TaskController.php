@@ -68,17 +68,18 @@ class TaskController {
                 echo "📭 Aucune tâche trouvée.";
                 return;
             }
-
+    
             // Affichage sous forme JSON
             header('Content-Type: application/json');
             echo json_encode([
                 'success' => true,
-                'task' => $task
+                'tasks' => $tasks  // Change 'task' en 'tasks'
             ]);
         } catch (Exception $e) {
             echo "❌ Erreur : " . $e->getMessage();
         }
     }
+    
 
     // Supprimer une tâche
     public function deleteTask($taskId) {
@@ -89,5 +90,33 @@ class TaskController {
             echo "❌ Erreur : " . $e->getMessage();
         }
     }
+
+    public function getUserTasks() {
+        try {
+            // Récupérer l'ID de l'utilisateur connecté à partir de la session
+            if (!isset($_SESSION['user_id'])) {
+                throw new Exception("Utilisateur non connecté.");
+            }
+    
+            $userId = $_SESSION['user_id'];
+    
+            // Utiliser TaskService pour récupérer les tâches
+            $tasks = $this->taskService->getTasksByUser($userId);
+    
+            // Retourner les tâches sous forme de JSON
+            header('Content-Type: application/json');
+            echo json_encode([
+                'success' => true,
+                'tasks' => $tasks
+            ]);
+        } catch (Exception $e) {
+            error_log("Erreur : " . $e->getMessage());
+            echo json_encode([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+    
 }
 ?>
