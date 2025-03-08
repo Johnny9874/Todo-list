@@ -1,8 +1,9 @@
+// Quand le DOM est prêt
 document.addEventListener("DOMContentLoaded", function() {
     // Attacher la fonction addTask au formulaire
     document.getElementById('addTaskForm').addEventListener('submit', addTask);
-
-    // Récupérer les tâches de l'utilisateur via AJAX
+    
+    // Récupérer les tâches de l'utilisateur
     fetch('/index.php?action=getUserTasks')
         .then(response => response.json())
         .then(data => {
@@ -17,6 +18,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
 });
 
+// Fonction pour ajouter une tâche
 function addTask(event) {
     event.preventDefault(); // Empêcher la soumission du formulaire par défaut
 
@@ -48,8 +50,8 @@ function addTask(event) {
     .then(data => {
         if (data.success) {
             alert('Tâche ajoutée avec succès!');
-            console.log("Tâche ajoutée:", data.task); // Voir l'objet task renvoyé
-            // Récupérer et afficher les tâches après l'ajout
+            console.log("Tâche ajoutée:", data.task);
+            // Appel pour récupérer toutes les tâches après l'ajout
             fetch('/index.php?action=getUserTasks')
                 .then(response => response.json())
                 .then(data => {
@@ -65,7 +67,7 @@ function addTask(event) {
     })
     .catch(error => {
         console.log('Erreur dans la requête AJAX : ' + error);
-    });    
+    });
 }
 
 // Fonction pour afficher les tâches
