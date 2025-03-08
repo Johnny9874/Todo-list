@@ -27,11 +27,11 @@ function addTask(event) {
     fetch('/index.php?action=addTask', {
         method: 'POST',
         body: JSON.stringify({
-            title: 'New Task',
-            description: 'Task description',
-            priority: 'high',
-            status: 'pending',
-            due_date: '2025-03-08'
+            title: title,
+            description: description,
+            priority: priority, 
+            status: status,
+            due_date: dueDate
         }),
         headers: {
             'Content-Type': 'application/json'
