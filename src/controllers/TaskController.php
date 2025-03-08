@@ -102,6 +102,9 @@ class TaskController {
     
             // Utiliser TaskService pour récupérer les tâches
             $tasks = $this->taskService->getTasksByUser($userId);
+
+            // Loguer les tâches récupérées
+            error_log("Tâches récupérées : " . print_r($tasks, true));
     
             // Retourner les tâches sous forme de JSON
             header('Content-Type: application/json');

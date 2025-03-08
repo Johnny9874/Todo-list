@@ -47,18 +47,19 @@ function addTask(event) {
 document.addEventListener("DOMContentLoaded", function() {
     // Récupérer les tâches de l'utilisateur via AJAX
     fetch('/index.php?action=getUserTasks')
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                displayTasks(data.tasks);
-            } else {
-                console.log("Erreur : " + data.message);
-            }
-        })
-        .catch(error => {
-            console.log('Erreur dans la requête AJAX : ' + error);
-        });
-});
+    .then(response => response.json())
+    .then(data => {
+        console.log("Données reçues : ", data); // Loguer les données reçues
+        if (data.success) {
+            displayTasks(data.tasks);
+        } else {
+            console.log("Erreur : " + data.message);
+        }
+    })
+    .catch(error => {
+        console.log('Erreur dans la requête AJAX : ' + error);
+    });
+
 
 // Fonction pour afficher les tâches
 function displayTasks(tasks) {
