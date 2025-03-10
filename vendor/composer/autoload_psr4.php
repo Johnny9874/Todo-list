@@ -6,7 +6,10 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
+    'Symfony\\Polyfill\\Php80\\' => array($vendorDir . '/symfony/polyfill-php80'),
     'Services\\' => array($baseDir . '/src/services'),
+    'MongoDB\\' => array($vendorDir . '/mongodb/mongodb/src'),
+    'Jean85\\' => array($vendorDir . '/jean85/pretty-package-versions/src'),
     'Dao\\' => array($baseDir . '/src/dao'),
     'Controllers\\' => array($baseDir . '/src/controllers'),
 );

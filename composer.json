@@ -3,7 +3,8 @@
     "description": "Ma todo-list",
     "version": "1.0.0",
     "require": {
-      "php": "^8.0"
+      "php": "^8.0",
+        "mongodb/mongodb": "^1.15"
     },
 "autoload": {
   "psr-4": {
